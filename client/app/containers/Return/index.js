@@ -40,7 +40,7 @@ const Return = () => {
         alert(`Return request failed: ${errorMessage}`);
       }
     } catch (error) {
-      console.log(error);
+     
       alert('Return request failed');
     }
   };

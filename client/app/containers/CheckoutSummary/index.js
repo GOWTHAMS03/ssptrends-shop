@@ -7,9 +7,8 @@ const Checkout = props => {
   const { addressFormData, orderitems } = props;
   const history = useHistory(); // import and use useHistory hook
 
-
   const handleProceedToPayment = () => {
-    const totalAmount = orderitems.orderitems.total;
+    const totalAmount = orderitems.total;
     history.push(`/payment?total=${totalAmount}`); // add query parameter to URL
   }
 
@@ -23,15 +22,20 @@ const Checkout = props => {
         <p>{addressFormData.country}</p>
       </div>
       <div>
-        {orderitems.orderitems && orderitems.orderitems.items && orderitems.orderitems.items.length > 0 && (
+        {orderitems.items && orderitems.items.length > 0 && (
           <div className='item-details'>
             <p>Order Details:</p>
-            <img src={orderitems.orderitems.items[0].imageUrl[0]} />
-            <p>{orderitems.orderitems.items[0].name}</p>
-            <p>{orderitems.orderitems.total}</p>
+            {orderitems.items.map(item => (
+              <div key={item._id}>
+                <img src={item.imageUrl[0]} alt={item.name} />
+            
+                <p>{item.name}</p>
+              </div>
+              
+            ))}
+            <p>Total: {orderitems.total}</p>
           </div>
         )}
-
       </div>
       <div>
         <div className='add-address-actions'>
@@ -46,7 +50,7 @@ const mapStateToProps = state => {
   return {
     addressFormData: state.address.addressFormData,
     cartItems: state.cart.cartItems,
-    orderitems: state.orderitem,
+    orderitems: state.orderitem.orderitems,
   };
 };
 

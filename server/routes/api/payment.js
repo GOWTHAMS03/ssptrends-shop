@@ -41,7 +41,7 @@ const payOrder = async (request, response) => {
     });
     response.send({ msg: "Payment was successful" });
   } catch (error) {
-    console.error(error);
+    
     response.send(error);
   }
 };
@@ -49,10 +49,10 @@ const payOrder = async (request, response) => {
 const paymentResponse = async (request, response) => {
   try {
     const orders = await OrderSchema.find();
-    console.log(orders);
+    
     response.send(orders);
   } catch (error) {
-    console.error(error);
+    
     response.send(error);
   }
 }

@@ -51,7 +51,7 @@ const ProductList = props => {
                       <h1 className='item-name'>{product.name}</h1>
                       {product.size && Object.keys(product.size).length > 0 && (
                         <p className='by'>
-                          By <span>{product.size.name}</span>
+                          Size <span>{product.size.name}</span>
                         </p>
                       )}
                       <p className='item-desc mb-0'>{product.description}</p>

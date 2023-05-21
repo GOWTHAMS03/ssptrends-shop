@@ -139,18 +139,15 @@ class Navigation extends React.PureComponent {
         <div className='header-info'>
           <Container>
             <Row>
-              <Col md='4' className='text-center d-none d-md-block'>
+              <Col className='text-center d-none d-md-block'>
                 <i className='fa fa-truck' />
                 <span>Free Shipping</span>
               </Col>
-              <Col md='4' className='text-center d-none d-md-block'>
+              <Col  className='text-center d-none d-md-block'>
                 <i className='fa fa-credit-card' />
                 <span>Payment Methods</span>
               </Col>
-              <Col md='4' className='text-center d-none d-md-block'>
-                <i className='fa fa-phone' />
-                <span></span>
-              </Col>
+            
               <Col xs='12' className='text-center d-block d-md-none'>
                 <i className='fa fa-phone' />
                 <span> Need advice? </span>

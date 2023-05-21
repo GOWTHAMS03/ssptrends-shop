@@ -10,8 +10,8 @@ const options = {
 
 Mongoose.plugin(slug, options);
 
-// size Schema
-const sizeSchema = new Schema({
+// Size Schema
+const SizeSchema = new Schema({
   name: {
     type: String,
     trim: true
@@ -45,4 +45,4 @@ const sizeSchema = new Schema({
   }
 });
 
-module.exports = Mongoose.model('size', sizeSchema);
+module.exports = Mongoose.model('size', SizeSchema);

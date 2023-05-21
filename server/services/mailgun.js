@@ -1,37 +1,47 @@
-const Mailgun = require('mailgun-js');
-
+const AWS = require('aws-sdk');
 const template = require('../config/template');
 const keys = require('../config/keys');
 
-const { key, domain, sender } = keys.mailgun;
+AWS.config.update({
+  region: keys.aws.region,
+  accessKeyId: keys.aws.accessKeyId,
+  secretAccessKey: keys.aws.secretAccessKey,
+});
 
-class MailgunService {
-  init() {
-    try {
-      return new Mailgun({
-        apiKey: key,
-        domain: domain
-      });
-    } catch (error) {
-      console.warn('Missing mailgun keys');
-    }
+class AWSSesService {
+  constructor() {
+    this.ses = new AWS.SES();
+  }
+
+  async sendEmail(params) {
+    return this.ses.sendEmail(params).promise();
   }
 }
 
-const mailgun = new MailgunService().init();
+const awsSesService = new AWSSesService();
 
 exports.sendEmail = async (email, type, host, data) => {
   try {
     const message = prepareTemplate(type, host, data);
 
-    const config = {
-      from: `SSP Trends! <${sender}>`,
-      to: email,
-      subject: message.subject,
-      text: message.text
+    const params = {
+      Source: keys.ses.sender,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: message.subject,
+        },
+        Body: {
+          Text: {
+            Data: message.text,
+          },
+        },
+      },
     };
 
-    return await mailgun.messages().send(config);
+    return await awsSesService.sendEmail(params);
   } catch (error) {
     return error;
   }

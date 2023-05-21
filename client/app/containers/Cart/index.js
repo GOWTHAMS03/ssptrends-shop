@@ -20,7 +20,7 @@ class Cart extends React.PureComponent {
       placeOrder,
       authenticated
     } = this.props;
-    console.log(placeOrder, "place order")
+    
 
     return (
       <div className='cart'>

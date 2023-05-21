@@ -1,6 +1,6 @@
 module.exports = {
   app: {
-    name: 'Mern Ecommerce',
+    name: 'Ssp Trends',
     apiURL: `${process.env.BASE_API_URL}`,
     serverURL: process.env.BASE_SERVER_URL,
     clientURL: process.env.BASE_CLIENT_URL
@@ -17,10 +17,8 @@ module.exports = {
     key: process.env.MAILCHIMP_KEY,
     listKey: process.env.MAILCHIMP_LIST_KEY
   },
-  mailgun: {
-    key: process.env.MAILGUN_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
-    sender: process.env.MAILGUN_EMAIL_SENDER
+  ses: {
+    sender: process.env.SES_EMAIL_SENDER, 
   },
   google: {
     clientID: process.env.GOOGLE_CLIENT_ID,

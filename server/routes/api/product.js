@@ -27,15 +27,15 @@ router.get('/item/:slug', async (req, res) => {
 
     const productDoc = await Product.findOne({ slug, isActive: true }).populate(
       {
-        path: 'size',
+        path: 'sizes',
         select: 'name isActive slug'
       }
     );
 
-    const hasNosize =
+    const hasNoSize =
       productDoc?.size === null || productDoc?.size?.isActive === false;
 
-    if (!productDoc || hasNosize) {
+    if (!productDoc || hasNoSize) {
       return res.status(404).json({
         message: 'No product found.'
       });
@@ -114,13 +114,13 @@ router.get('/list', async (req, res) => {
     let products = null;
     const productsCount = await Product.aggregate(basicQuery);
     const count = productsCount.length;
-    const sizes = count > limit ? page - 1 : 0;
+    const size = count > limit ? page - 1 : 0;
     const currentPage = count > limit ? Number(page) : 1;
 
     // paginate query
     const paginateQuery = [
       { $sort: sortOrder },
-      { $skip: sizes * limit },
+      { $skip: size * limit },
       { $limit: limit * 1 }
     ];
 
@@ -147,7 +147,7 @@ router.get('/list', async (req, res) => {
   }
 });
 
-// fetch store products by size api
+// fetch store products by brand api
 router.get('/list/size/:slug', async (req, res) => {
   try {
     const slug = req.params.slug;
@@ -210,7 +210,7 @@ router.get('/list/size/:slug', async (req, res) => {
             'size.isActive': '$sizes.isActive'
           }
         },
-        { $project: { sizes: 0 } }
+        { $project: { brands: 0 } }
       ]);
 
       res.status(200).json({
@@ -260,6 +260,7 @@ router.post(
   role.check(ROLES.Admin, ROLES.Merchant),
   upload.single('image'),
   async (req, res) => {
+    console.log(res)
     try {
       const sku = req.body.sku;
       const name = req.body.name;
@@ -295,7 +296,10 @@ router.post(
         return res.status(400).json({ error: 'This sku is already in use.' });
       }
 
+      
       const { imageUrl, imageKey } = await s3Upload(image);
+
+
 
       const product = new Product({
         sku,
@@ -343,16 +347,16 @@ router.get(
 
         products = await Product.find({})
           .populate({
-            path: 'size',
+            path: 'sizes',
             populate: {
               path: 'merchant',
               model: 'Merchant'
             }
           })
-          .where('size', sizeId);
+          .where('sizes', sizeId);
       } else {
         products = await Product.find({}).populate({
-          path: 'size',
+          path: 'sizes',
           populate: {
             path: 'merchant',
             model: 'Merchant'
@@ -383,7 +387,7 @@ router.get(
       let productDoc = null;
 
       if (req.user.merchant) {
-        const sizes = await size.find({
+        const sizes = await Size.find({
           merchant: req.user.merchant
         }).populate('merchant', '_id');
 
@@ -391,13 +395,13 @@ router.get(
 
         productDoc = await Product.findOne({ _id: productId })
           .populate({
-            path: 'size',
+            path: 'sizes',
             select: 'name'
           })
-          .where('size', sizeId);
+          .where('sizes',sizeId);
       } else {
         productDoc = await Product.findOne({ _id: productId }).populate({
-          path: 'size',
+          path: 'sizes',
           select: 'name'
         });
       }
