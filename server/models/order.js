@@ -1,33 +1,96 @@
-const Mongoose = require('mongoose');
-const { Schema } = Mongoose;
+const mongoose = require('mongoose');
 
-// Order Schema
-const OrderSchema = new Schema({
+const orderSchema = new mongoose.Schema({
   cart: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Cart'
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
   total: {
     type: Number,
-    default: 0
+    required: true
   },
-  updated: Date,
+  addressFormData: {
+    address: {
+      type: String
+    },
+    phonenumber: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    state: {
+      type: String
+    },
+    country: {
+      type: String
+    },
+    zipCode: {
+      type: String
+    },
+    isDefault: {
+      type: Boolean,
+      default: false
+    }
+  },
+  orderitems: [{
+    imageUrl: {
+      type: [String]
+    },
+    taxable: {
+      type: Boolean,
+      default: false
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    size: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Size'
+    },
+    sku: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    description: {
+      type: String
+    },
+    quantity: {
+      type: Number
+    },
+    price: {
+      type: Number
+    },
+    imageKey: {
+      type: String
+    },
+    created: {
+      type: Date,
+      default: Date.now
+    },
+    slug: {
+      type: String
+    },
+    inventory: {
+      type: Number
+    },
+    totalPrice: {
+      type: Number
+    }
+  }],
   created: {
     type: Date,
     default: Date.now
-  },
-  isPaid: Boolean,
-  amount: Number,
-  razorpay: {
-    order_id: String,
-    payment_id: String,
-    signature: String,
-  },
-
+  }
 });
 
-module.exports = Mongoose.model('Order', OrderSchema);
+const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order;

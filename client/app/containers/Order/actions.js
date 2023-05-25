@@ -50,6 +50,8 @@ export const fetchOrders = (page = 1) => {
 
       const { orders, totalPages, currentPage, count } = response.data;
 
+      console.log(orders)
+
       dispatch({
         type: FETCH_ORDERS,
         payload: orders
@@ -191,38 +193,42 @@ export const updateOrderItemStatus = (itemId, status) => {
   };
 };
 
-
-export const placeOrder = (addressFormData, orderItems) => {
-  return (dispatch, getState) => {
-    const token = localStorage.getItem('token');
-    const cartItems = getState().cart.cartItems;
-    if (token && cartItems.length > 0) {
-      Promise.all([dispatch(getCartId())]).then(() => {
-        dispatch(addOrder(addressFormData, orderItems));
-      });
-    }
-    dispatch(toggleCart());
-  };
-};
-
-export const addOrder = (addressFormData, orderItems) => {
+export const addOrder = (addressFormData, orderitems) => {
   return async (dispatch, getState) => {
     try {
       const cartId = localStorage.getItem('cart_id');
       const total = getState().cart.cartTotal;
+
       if (cartId) {
         const response = await axios.post(`/api/order/add`, {
           cartId,
           total,
           addressFormData,
-          orderItems
+          orderitems
         });
+
         dispatch(push(`/order/success/${response.data.order._id}`));
         dispatch(clearCart());
       }
     } catch (error) {
       handleError(error, dispatch);
     }
+  };
+};
+
+export const placeOrder = (addressFormData, orderitems) => {
+  return (dispatch, getState) => {
+    const token = localStorage.getItem('token');
+
+    const cartItems = getState().cart.cartItems;
+
+    if (token && cartItems.length > 0) {
+      Promise.all([dispatch(getCartId())]).then(() => {
+        dispatch(addOrder(addressFormData, orderitems));
+      });
+    }
+
+    dispatch(toggleCart());
   };
 };
 

@@ -13,14 +13,18 @@ const { ROLES, CART_ITEM_STATUS } = require('../../constants');
 
 router.post('/add', auth, async (req, res) => {
   try {
-    const cart = req.body.cartId;
-    const total = req.body.total;
+    const { cartId, total, addressFormData, orderitems } = req.body;
     const user = req.user._id;
 
+    console.log(addressFormData);
+    console.log(orderitems);
+
     const order = new Order({
-      cart,
+      cart: cartId,
       user,
-      total
+      total,
+      addressFormData,
+      orderitems
     });
 
     const orderDoc = await order.save();
@@ -28,7 +32,7 @@ router.post('/add', auth, async (req, res) => {
     const cartDoc = await Cart.findById(orderDoc.cart._id).populate({
       path: 'products.product',
       populate: {
-        path: 'size'
+        path: 'brand'
       }
     });
 
@@ -37,22 +41,26 @@ router.post('/add', auth, async (req, res) => {
       created: orderDoc.created,
       user: orderDoc.user,
       total: orderDoc.total,
-      products: cartDoc.products
+      products: cartDoc.products,
+      addressFormData: cartDoc.addressFormData,
+      orderitems: cartDoc.orderitems
     };
 
     await mailgun.sendEmail(order.user.email, 'order-confirmation', newOrder);
 
     res.status(200).json({
       success: true,
-      message: `Your order has been placed successfully!`,
+      message: 'Your order has been placed successfully!',
       order: { _id: orderDoc._id }
     });
   } catch (error) {
+    console.error(error);
     res.status(400).json({
       error: 'Your request could not be processed. Please try again.'
     });
   }
 });
+
 
 // search orders api
 router.get('/search', auth, async (req, res) => {
@@ -75,7 +83,7 @@ router.get('/search', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       });
@@ -89,7 +97,7 @@ router.get('/search', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       });
@@ -126,6 +134,7 @@ router.get('/search', auth, async (req, res) => {
 
 // fetch orders api
 router.get('/', auth, async (req, res) => {
+  
   try {
     const { page = 1, limit = 10 } = req.query;
     const ordersDoc = await Order.find()
@@ -135,7 +144,7 @@ router.get('/', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       })
@@ -143,8 +152,16 @@ router.get('/', auth, async (req, res) => {
       .skip((page - 1) * limit)
       .exec();
 
+      console.log(ordersDoc,"sdfnlsdlfskdflksdlnfsdlfsdnfkkk")
+
     const count = await Order.countDocuments();
+
+    console.log(count,"count")
+
+
     const orders = store.formatOrders(ordersDoc);
+
+    console.log(orders,"orders")
 
     res.status(200).json({
       orders,
@@ -173,7 +190,7 @@ router.get('/me', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       })
@@ -210,7 +227,7 @@ router.get('/:orderId', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       });
@@ -221,7 +238,7 @@ router.get('/:orderId', auth, async (req, res) => {
         populate: {
           path: 'products.product',
           populate: {
-            path: 'size'
+            path: 'brand'
           }
         }
       });
@@ -312,8 +329,9 @@ router.put('/status/item/:itemId', auth, async (req, res) => {
         return res.status(200).json({
           success: true,
           orderCancelled: true,
-          message: `${req.user.role === ROLES.Admin ? 'Order' : 'Your order'
-            } has been cancelled successfully`
+          message: `${
+            req.user.role === ROLES.Admin ? 'Order' : 'Your order'
+          } has been cancelled successfully`
         });
       }
 

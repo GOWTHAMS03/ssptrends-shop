@@ -30,7 +30,7 @@ import { toggleCart } from '../Navigation/actions';
 // Handle Add To Cart
 export const handleAddToCart = product => {
   return (dispatch, getState) => {
-    product.quantity = Number(getState().product.productShopData.quantity);
+    product.quantity = getState().product.productShopData.quantity;
     product.totalPrice = product.quantity * product.price;
     product.totalPrice = parseFloat(product.totalPrice.toFixed(2));
     const inventory = getState().product.storeProduct.inventory;
@@ -38,12 +38,11 @@ export const handleAddToCart = product => {
     const result = calculatePurchaseQuantity(inventory);
 
     const rules = {
-      quantity: `min:1|max:${result}`
+      quantity: 'min:1',
     };
 
     const { isValid, errors } = allFieldsValidation(product, rules, {
       'min.quantity': 'Quantity must be at least 1.',
-      'max.quantity': `Quantity may not be greater than ${result}.`
     });
 
     if (!isValid) {
@@ -72,6 +71,7 @@ export const handleAddToCart = product => {
     dispatch(toggleCart());
   };
 };
+
 
 // Handle Remove From Cart
 export const handleRemoveFromCart = product => {

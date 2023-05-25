@@ -128,7 +128,7 @@ const Shipping = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  
+  console.log(ownProps)
   return {
     addressFormData: state.address.addressFormData,
     formErrors: state.address.formErrors,

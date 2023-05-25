@@ -5,7 +5,7 @@ import { Row, Col } from 'reactstrap';
 import Input from '../../components/Common/Input';
 import Button from '../../components/Common/Button';
 
-function index() {
+function Index() {
   const [coupons, setCoupons] = useState([]);
   const [couponCode, setCouponCode] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
@@ -33,8 +33,8 @@ function index() {
   function handleCreate(event) {
     event.preventDefault();
     const data = {
-      code: event.target.code.value,
-      discount: event.target.discount.value,
+      code: event.target.elements.code.value,
+      discount: event.target.elements.discount.value,
     };
     axios.post(`${url}/coupons`, data)
       .then((res) => setCoupons([...coupons, res.data]))
@@ -44,12 +44,12 @@ function index() {
   // Update a coupon on submit
   function handleUpdate(event) {
     event.preventDefault();
-    const id = event.target.id.value;
+    const id = event.target.elements.id.value;
     const data = {
-      code: event.target.code.value,
-      discount: event.target.discount.value,
+      code: event.target.elements.code.value,
+      discount: event.target.elements.discount.value,
     };
-    axios.put(`${url}/coupons/${id}`, data) // fixed URL
+    axios.put(`${url}/coupons/${id}`, data)
       .then((res) => {
         const updatedCoupon = res.data;
         setCoupons(coupons.map((coupon) => coupon._id === updatedCoupon._id ? updatedCoupon : coupon));
@@ -68,9 +68,8 @@ function index() {
   return (
     <div>
       <Col xs='12' lg='10'>
-        <h1>Coupon Management System</h1>
         <h2>List of Coupons</h2>
-        <table xs="10" lg="8">
+        <table>
           <thead>
             <tr>
               <th>ID</th>
@@ -85,11 +84,12 @@ function index() {
                 <td>{coupon._id}</td>
                 <td>{coupon.code}</td>
                 <td>{coupon.discount}</td>
-                <td><Button type='submit' text='Delete' onClick={() => handleDelete(coupon._id)} /> </td>
+                <td>
+                  <Button type='button' text='Delete' onClick={() => handleDelete(coupon._id)} />
+                </td>
               </tr>
             ))}
           </tbody>
-
         </table>
       </Col>
       <Col xs='12' lg='6'>
@@ -102,7 +102,7 @@ function index() {
           <Input type="number" id="discount" />
           <br />
           <div className='reset-actions'>
-            <Button type='submit' text='Create Coupon'></Button>
+            <Button type='submit' text='Create Coupon' />
           </div>
         </form>
       </Col>
@@ -115,17 +115,14 @@ function index() {
           <label htmlFor="code">Code:</label>
           <Input type="text" id="code" />
           <br />
-
           <label htmlFor="discount">Discount (%):</label>
           <input type="number" id="discount" />
-
           <br />
           <Button type="submit" text="Update Coupon" />
         </form>
       </Col>
     </div>
-
   );
 }
 
-export default index;
+export default Index;

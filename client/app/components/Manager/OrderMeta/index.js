@@ -16,7 +16,8 @@ import { ArrowBackIcon } from '../../Common/Icon';
 const OrderMeta = props => {
   const { order, cancelOrder, onBack, addresses } = props;
 
-
+console.log(order)
+console.log(addresses,"sodiofsid")
 
   const renderMetaAction = () => {
     const isNotDelivered =
@@ -66,9 +67,7 @@ const OrderMeta = props => {
               <p className='one-line-ellipsis'>Order Address</p>
             </Col>
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{` ${formatDate(
-                addresses
-              )}`}</span>
+              <span className='order-label one-line-ellipsis'>{}</span>
             </Col>
           </Row>
         </Col>

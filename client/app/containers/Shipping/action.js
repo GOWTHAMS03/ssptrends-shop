@@ -158,17 +158,6 @@ export const addAddress = (history) => {
 };
 
 
-// const addAddress = addressData => {
-//   // add the address using addressData
-//   // ...
-
-//   // navigate to the payment page
-//   history.push('/payment');
-// };
-
-// export default {
-//   addAddress: withRouter(addAddress)
-// };
 
 // update address api
 export const updateAddress = () => {

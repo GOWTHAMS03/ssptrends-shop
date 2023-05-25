@@ -52,8 +52,8 @@ class Homepage extends React.PureComponent {
         <div className='parent-container'>
         
           <div>
-            <h1>Size</h1>
-            <p>Total Product Count {sizeArrayLength}</p> 
+            <h1>Sizes</h1>
+          
           </div>
           <div className='mini-size-block round-2'>
             {storesizes.map((size, index) => {
@@ -77,6 +77,7 @@ class Homepage extends React.PureComponent {
         </div>
 
         <div>
+        <p className='parent-container'> Total Product Count <h1>{sizeArrayLength}</h1></p> 
           <h1 className='parent-container'>Latest Products</h1>
         </div>
         <div className='products-shop '>
