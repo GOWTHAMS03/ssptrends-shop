@@ -38,6 +38,7 @@ class Edit extends React.PureComponent {
       deleteAddress
     } = this.props;
 
+    console.log(address)
 
     return (
       <SubPage

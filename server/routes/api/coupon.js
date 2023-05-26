@@ -5,13 +5,6 @@ const Coupon = require('../../models/cupon');
 
 
 
-
-const coupons = [
-  { id: 1, code: 'ABC123', discount: 10 },
-  { id: 2, code: 'DEF456', discount: 20 },
-  { id: 3, code: 'GHI789', discount: 30 }
-];
-
 // Route handler for GET /coupons
 // router.get('/', (req, res) => {
 //   res.json(coupons);

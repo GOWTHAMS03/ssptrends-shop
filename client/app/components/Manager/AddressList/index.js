@@ -13,6 +13,7 @@ import { AddressIcon, CheckIcon } from '../../Common/Icon';
 const AddressList = props => {
   const { addresses } = props;
 
+
   return (
     <div className='a-list'>
       {addresses.map((address, index) => (

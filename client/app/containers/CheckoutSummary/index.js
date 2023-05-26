@@ -152,16 +152,17 @@ const Checkout = (props) => {
         )}
       </div>
       <div>
-        <div>
+        <div className='parent-container'>
           <Button
             type="submit"
             disabled={loading}
             text="Proceed to Payment"
             onClick={loadRazorpay}
+            
           />
         </div>
       </div>
-      <button onClick={handleClick}>Button</button>
+     
     </div>
   );
 };

@@ -67,7 +67,9 @@ const OrderMeta = props => {
               <p className='one-line-ellipsis'>Order Address</p>
             </Col>
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{ ` ${order.addressFormData.address},${order.addressFormData.phonenumber},${order.addressFormData.city},${order.addressFormData.state},${order.addressFormData.zipCode},${order.addressFormData.country}`}</span>
+              <span className='order-label one-line-ellipsis'>{ ` ${order.addressFormData.address}, `}</span>
+              <span className='order-label one-line-ellipsis'>{`${order.addressFormData.phonenumber}`}</span>
+              <span className='order-label one-line-ellipsis'>{`${order.addressFormData.city}, ${order.addressFormData.state}, ${order.addressFormData.zipCode}, ${order.addressFormData.country}`}</span>
             </Col>
           </Row>
           <Row>

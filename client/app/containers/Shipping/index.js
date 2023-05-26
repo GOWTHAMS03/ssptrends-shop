@@ -20,7 +20,7 @@ const Shipping = props => {
 
   return (
     <SubPage
-      title='Add Address'
+      title='Shipping Address'
       actionTitle='Cancel'
       handleAction={() => history.goBack()}
     >
@@ -119,7 +119,7 @@ const Shipping = props => {
           </Row>
           <hr />
           <div className='add-address-actions'>
-            <Button type='submit' text='Add Address' />
+            <Button type='submit' text='Continue' />
           </div>
         </form>
       </div>
@@ -130,6 +130,7 @@ const Shipping = props => {
 const mapStateToProps = (state, ownProps) => {
   console.log(ownProps)
   return {
+    address: state.address.address,
     addressFormData: state.address.addressFormData,
     formErrors: state.address.formErrors,
     history: ownProps.history

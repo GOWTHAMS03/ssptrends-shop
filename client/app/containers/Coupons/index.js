@@ -20,7 +20,6 @@ function Index() {
       .catch((err) => console.error(err));
   }, []);
 
-
   // Apply the coupon to the total price on submit
   function handleSubmit(event) {
     event.preventDefault();
@@ -57,13 +56,17 @@ function Index() {
       .catch((err) => console.error(err));
   }
 
-
   // Delete a coupon on click
   function handleDelete(id) {
     axios.delete(`${url}/coupons/${id}`)
       .then(() => setCoupons(coupons.filter((coupon) => coupon._id !== id)))
       .catch((err) => console.error(err));
   }
+
+  // Define the onInputChange function
+  const onInputChange = (event) => {
+    setCouponCode(event.target.value);
+  };
 
   return (
     <div>
@@ -96,7 +99,7 @@ function Index() {
         <h2>Create Coupon</h2>
         <form onSubmit={handleCreate}>
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" />
+          <Input type="text" id="code" onChange={onInputChange} />
           <br />
           <label htmlFor="discount">Discount (%):</label>
           <Input type="number" id="discount" />
@@ -113,7 +116,7 @@ function Index() {
           <Input type="text" id="id" />
           <br />
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" />
+          <Input type="text" id="code" onChange={onInputChange} />
           <br />
           <label htmlFor="discount">Discount (%):</label>
           <input type="number" id="discount" />
