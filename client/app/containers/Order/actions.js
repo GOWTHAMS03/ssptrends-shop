@@ -50,13 +50,15 @@ export const fetchOrders = (page = 1) => {
 
       const { orders, totalPages, currentPage, count } = response.data;
 
-      console.log(orders)
+      console.log(orders,"this is that order")
 
       dispatch({
         type: FETCH_ORDERS,
         payload: orders
+        
       });
-
+      
+      
       dispatch({
         type: SET_ADVANCED_FILTERS,
         payload: { totalPages, currentPage, count }
@@ -138,6 +140,8 @@ export const fetchOrder = (id, withLoading = true) => {
         type: FETCH_ORDER,
         payload: response.data.order
       });
+
+      console.log(response.data.order,"this is response data")
     } catch (error) {
       handleError(error, dispatch);
     } finally {

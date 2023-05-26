@@ -14,8 +14,8 @@ import OrderSummary from '../OrderSummary';
 
 const OrderDetails = props => {
   const { order, user, cancelOrder, updateOrderItemStatus, onBack } = props;
-  
- console.log(order,"this is meta order");
+ 
+  console.log(order,"this is orderdetails page")
   
   return (
     <div className='order-details'>

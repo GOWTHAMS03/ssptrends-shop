@@ -16,8 +16,6 @@ router.post('/add', auth, async (req, res) => {
     const { cartId, total, addressFormData, orderitems } = req.body;
     const user = req.user._id;
 
-    console.log(addressFormData);
-    console.log(orderitems);
 
     const order = new Order({
       cart: cartId,
@@ -152,16 +150,16 @@ router.get('/', auth, async (req, res) => {
       .skip((page - 1) * limit)
       .exec();
 
-      console.log(ordersDoc,"sdfnlsdlfskdflksdlnfsdlfsdnfkkk")
 
     const count = await Order.countDocuments();
 
-    console.log(count,"count")
+
 
 
     const orders = store.formatOrders(ordersDoc);
 
-    console.log(orders,"orders")
+    console.log(orders,"this is reducers");
+
 
     res.status(200).json({
       orders,
@@ -244,6 +242,8 @@ router.get('/:orderId', auth, async (req, res) => {
       });
     }
 
+   
+
     if (!orderDoc || !orderDoc.cart) {
       return res.status(404).json({
         message: `Cannot find order with the id: ${orderId}.`
@@ -256,9 +256,11 @@ router.get('/:orderId', auth, async (req, res) => {
       created: orderDoc.created,
       totalTax: 0,
       products: orderDoc?.cart?.products,
+      addressFormData:orderDoc?.addressFormData,
+      user:orderDoc?.user,
       cartId: orderDoc.cart._id
     };
-
+    console.log(order,"this is gowtham")
     order = store.caculateTaxAmount(order);
 
     res.status(200).json({

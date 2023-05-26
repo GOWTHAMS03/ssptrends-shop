@@ -31,11 +31,15 @@ class OrderPage extends React.PureComponent {
     const {
       history,
       order,
+      orders,
       user,
       isLoading,
       cancelOrder,
       updateOrderItemStatus
     } = this.props;
+
+    console.log(order,"this is my order");
+    console.log(orders,"this is my orders");
 
     return (
       <div className='order-page'>
@@ -64,9 +68,12 @@ class OrderPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
+
+  console.log(state,"thi is state")
   return {
     user: state.account.user,
     order: state.order.order,
+    orders :state.order.orders,
     isLoading: state.order.isLoading
   };
 };
