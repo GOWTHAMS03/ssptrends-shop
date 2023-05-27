@@ -221,18 +221,19 @@ export const addOrder = (addressFormData, orderitems) => {
 };
 
 export const placeOrder = (addressFormData, orderitems) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const token = localStorage.getItem('token');
-
     const cartItems = getState().cart.cartItems;
 
     if (token && cartItems.length > 0) {
-      Promise.all([dispatch(getCartId())]).then(() => {
-        dispatch(addOrder(addressFormData, orderitems));
-      });
+      try {
+        await dispatch(getCartId());
+        await dispatch(addOrder(addressFormData, orderitems));
+        
+      } catch (error) {
+        handleError(error, dispatch);
+      }
     }
-
-    dispatch(toggleCart());
   };
 };
 

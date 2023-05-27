@@ -9,11 +9,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Minisize = props => {
-  const { sizes, togglesize } = props;
+  const { sizes, toggleSize } = props;
   
 
   const handleMenuItemClick = () => {
-    togglesize();
+    toggleSize();
   };
 
   return (

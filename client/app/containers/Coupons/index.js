@@ -5,13 +5,13 @@ import { Row, Col } from 'reactstrap';
 import Input from '../../components/Common/Input';
 import Button from '../../components/Common/Button';
 
-function Index() {
+function index() {
   const [coupons, setCoupons] = useState([]);
   const [couponCode, setCouponCode] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
 
-  const url = 'http://localhost:3000/api';
+  const url = 'http://35.154.163.7:3000/api';
 
   // Fetch the list of coupons on mount
   useEffect(() => {
@@ -19,6 +19,7 @@ function Index() {
       .then((res) => setCoupons(res.data))
       .catch((err) => console.error(err));
   }, []);
+
 
   // Apply the coupon to the total price on submit
   function handleSubmit(event) {
@@ -32,8 +33,8 @@ function Index() {
   function handleCreate(event) {
     event.preventDefault();
     const data = {
-      code: event.target.elements.code.value,
-      discount: event.target.elements.discount.value,
+      code: event.target.code.value,
+      discount: event.target.discount.value,
     };
     axios.post(`${url}/coupons`, data)
       .then((res) => setCoupons([...coupons, res.data]))
@@ -43,18 +44,19 @@ function Index() {
   // Update a coupon on submit
   function handleUpdate(event) {
     event.preventDefault();
-    const id = event.target.elements.id.value;
+    const id = event.target.id.value;
     const data = {
-      code: event.target.elements.code.value,
-      discount: event.target.elements.discount.value,
+      code: event.target.code.value,
+      discount: event.target.discount.value,
     };
-    axios.put(`${url}/coupons/${id}`, data)
+    axios.put(`${url}/coupons/${id}`, data) // fixed URL
       .then((res) => {
         const updatedCoupon = res.data;
         setCoupons(coupons.map((coupon) => coupon._id === updatedCoupon._id ? updatedCoupon : coupon));
       })
       .catch((err) => console.error(err));
   }
+
 
   // Delete a coupon on click
   function handleDelete(id) {
@@ -63,16 +65,12 @@ function Index() {
       .catch((err) => console.error(err));
   }
 
-  // Define the onInputChange function
-  const onInputChange = (event) => {
-    setCouponCode(event.target.value);
-  };
-
   return (
     <div>
       <Col xs='12' lg='10'>
+        <h1>Coupon Management System</h1>
         <h2>List of Coupons</h2>
-        <table>
+        <table xs="10" lg="8">
           <thead>
             <tr>
               <th>ID</th>
@@ -87,25 +85,24 @@ function Index() {
                 <td>{coupon._id}</td>
                 <td>{coupon.code}</td>
                 <td>{coupon.discount}</td>
-                <td>
-                  <Button type='button' text='Delete' onClick={() => handleDelete(coupon._id)} />
-                </td>
+                <td><Button type='submit' text='Delete' onClick={() => handleDelete(coupon._id)} /> </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </Col>
       <Col xs='12' lg='6'>
         <h2>Create Coupon</h2>
         <form onSubmit={handleCreate}>
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" onChange={onInputChange} />
+          <Input type="text" id="code" />
           <br />
           <label htmlFor="discount">Discount (%):</label>
           <Input type="number" id="discount" />
           <br />
           <div className='reset-actions'>
-            <Button type='submit' text='Create Coupon' />
+            <Button type='submit' text='Create Coupon'></Button>
           </div>
         </form>
       </Col>
@@ -116,16 +113,19 @@ function Index() {
           <Input type="text" id="id" />
           <br />
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" onChange={onInputChange} />
+          <Input type="text" id="code" />
           <br />
+
           <label htmlFor="discount">Discount (%):</label>
           <input type="number" id="discount" />
+
           <br />
           <Button type="submit" text="Update Coupon" />
         </form>
       </Col>
     </div>
+
   );
 }
 
-export default Index;
+export default index;

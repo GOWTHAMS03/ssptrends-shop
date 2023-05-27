@@ -7,7 +7,7 @@
 import {
   TOGGLE_MENU,
   TOGGLE_CART,
-  TOGGLE_size,
+  TOGGLE_SIZE,
   SEARCH_CHANGE,
   SUGGESTIONS_FETCH_REQUEST,
   SUGGESTIONS_CLEAR_REQUEST
@@ -35,7 +35,7 @@ const navigationReducer = (state = initialState, action) => {
         isCartOpen: !state.isCartOpen,
         isMenuOpen: false
       };
-    case TOGGLE_size:
+    case TOGGLE_SIZE:
       return {
         ...state,
         issizeOpen: !state.issizeOpen

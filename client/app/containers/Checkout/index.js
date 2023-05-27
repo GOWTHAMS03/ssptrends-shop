@@ -9,7 +9,7 @@ import CartSummary from '../../components/Store/CartSummary';
 import { BagIcon, CloseIcon } from '../../components/Common/Icon';
 import Button from '../../components/Common/Button';
 
-const Shipping = (props) => {
+const Checkout = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -47,11 +47,18 @@ const Shipping = (props) => {
   const handleContinueToShipping = () => {
     if (cartItems.length > 0) {
       const total = discountedPrice > 0 ? discountedPrice : cartTotal;
-      const orderitem = { items: cartItems, total: total };
-      dispatch(storeOrder(orderitem));
-      history.push('/shipping');
+      if (total < 300) {
+        alert('Please purchase items worth more than Rs 300.');
+      } else {
+        const orderitem = { items: cartItems, total: total };
+        dispatch(storeOrder(orderitem));
+        history.push('/shipping');
+      }
+    } else {
+      history.push('/shop');
     }
   };
+  
 
   const total = discountedPrice > 0 ? discountedPrice : cartTotal;
 
@@ -117,4 +124,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Shipping);
+export default connect(mapStateToProps, actions)(Checkout);

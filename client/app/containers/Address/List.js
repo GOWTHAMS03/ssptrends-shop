@@ -22,6 +22,8 @@ class List extends React.PureComponent {
   render() {
     const { history, addresses } = this.props;
 
+    console.log(addresses,"this is list address")
+
     return (
       <>
         <SubPage

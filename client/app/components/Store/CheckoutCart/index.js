@@ -10,12 +10,13 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../Common/Button';
 
 const Checkout = props => {
-  const { authenticated, handleShopping, handleCheckout, placeOrder } = props;
+  const { authenticated, handleShopping, handleCheckout, toggleCart } = props;
 
   const history = useHistory();
 
   const handleClick = () => {
     history.push('/checkout');
+    toggleCart()
   }
 
   return (

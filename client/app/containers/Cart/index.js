@@ -57,6 +57,7 @@ class Cart extends React.PureComponent {
               handleCheckout={handleCheckout}
               placeOrder={placeOrder}
               authenticated={authenticated}
+              toggleCart={toggleCart}
             />
           </div>
         )}

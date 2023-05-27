@@ -41,9 +41,9 @@ class Navigation extends React.PureComponent {
     this.props.fetchStoreCategories();
   }
 
-  togglesize() {
+  toggleSize() {
     this.props.fetchStoresizes();
-    this.props.togglesize();
+    this.props.toggleSize();
   }
 
   toggleMenu() {
@@ -150,7 +150,7 @@ class Navigation extends React.PureComponent {
             
               <Col xs='12' className='text-center d-block d-md-none'>
                 <i className='fa fa-phone' />
-                <span> Need advice? </span>
+               <Link to="/contact"><span> Need advice? </span></Link> 
               </Col>
             </Row>
           </Container>
@@ -235,7 +235,7 @@ class Navigation extends React.PureComponent {
                     <Dropdown
                       nav
                       inNavbar
-                      toggle={() => this.togglesize()}
+                      toggle={() => this.toggleSize()}
                       isOpen={issizeOpen}
                     >
                       <DropdownToggle nav>
@@ -246,7 +246,7 @@ class Navigation extends React.PureComponent {
                         <div className='mini-size'>
                           <Minisize
                             sizes={sizes}
-                            togglesize={() => this.togglesize()}
+                            toggleSize={() => this.toggleSize()}
                           />
                         </div>
                       </DropdownMenu>

@@ -35,6 +35,8 @@ export const fetchUsers = page => {
 
       const { users, totalPages, currentPage, count } = response.data;
 
+      console.log(users,"this is user details")
+
       dispatch({
         type: FETCH_USERS,
         payload: users

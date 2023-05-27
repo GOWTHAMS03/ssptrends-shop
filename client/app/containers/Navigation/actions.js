@@ -9,7 +9,7 @@ import handleError from '../../utils/error';
 import {
   TOGGLE_MENU,
   TOGGLE_CART,
-  TOGGLE_size,
+  TOGGLE_SIZE,
   SEARCH_CHANGE,
   SUGGESTIONS_FETCH_REQUEST,
   SUGGESTIONS_CLEAR_REQUEST
@@ -22,14 +22,15 @@ export const toggleMenu = () => {
 };
 
 export const toggleCart = () => {
+  
   return {
     type: TOGGLE_CART
   };
 };
 
-export const togglesize = () => {
+export const toggleSize = () => {
   return {
-    type: TOGGLE_size
+    type: TOGGLE_SIZE
   };
 };
 
