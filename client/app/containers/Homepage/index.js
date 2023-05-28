@@ -27,7 +27,7 @@ class Homepage extends React.PureComponent {
     const sizeArray = storeProducts.map((product) => product.size);
     const sizeArrayLength = sizeArray.length;
     // Get the newest products and limit to five
-    const newestProducts = storeProducts && storeProducts.slice(0, 5);
+    const newestProducts = storeProducts && storeProducts.slice(0, 4);
 
     return (
       <div className='homepage'>
