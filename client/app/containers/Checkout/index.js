@@ -47,8 +47,8 @@ const Checkout = (props) => {
   const handleContinueToShipping = () => {
     if (cartItems.length > 0) {
       const total = discountedPrice > 0 ? discountedPrice : cartTotal;
-      if (total < 300) {
-        alert('Please purchase items worth more than Rs 300.');
+      if (total < 500) {
+        alert('Please purchase items worth more than Rs 500.');
       } else {
         const orderitem = { items: cartItems, total: total };
         dispatch(storeOrder(orderitem));

@@ -11,7 +11,7 @@ function index() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
 
-  const url = 'http://35.154.163.7:3000/api';
+  const url = 'http://localhost:3000/api';
 
   // Fetch the list of coupons on mount
   useEffect(() => {
@@ -96,10 +96,10 @@ function index() {
         <h2>Create Coupon</h2>
         <form onSubmit={handleCreate}>
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" />
+          <input type="text" id="code" />
           <br />
           <label htmlFor="discount">Discount (%):</label>
-          <Input type="number" id="discount" />
+          <input type="number" id="discount" />
           <br />
           <div className='reset-actions'>
             <Button type='submit' text='Create Coupon'></Button>
@@ -110,10 +110,10 @@ function index() {
         <h2>Update Coupon</h2>
         <form onSubmit={handleUpdate}>
           <label htmlFor="id">ID:</label>
-          <Input type="text" id="id" />
+          <input type="text" id="id" />
           <br />
           <label htmlFor="code">Code:</label>
-          <Input type="text" id="code" />
+          <input type="text" id="code" />
           <br />
 
           <label htmlFor="discount">Discount (%):</label>

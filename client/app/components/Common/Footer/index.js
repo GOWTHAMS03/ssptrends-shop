@@ -18,6 +18,8 @@ const Footer = () => {
     { id: 2, name: 'Shipping', to: '/shipping' }
   ];
 
+
+
   const footerBusinessLinks = (
     <ul className='support-links'>
       <li className='footer-link'>
@@ -37,6 +39,22 @@ const Footer = () => {
     </li>
   ));
 
+  const policyLinks = [
+    { id: 0, name: 'Privacy Policy', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/privacy' },
+    { id: 1, name: 'Terms and Conditions', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/terms' },
+    { id: 2, name: 'Cancellation and Refund', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/refund' },
+    { id: 3, name: 'Shipping & Delivery Policy', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/shipping' },
+    { id: 4, name: 'Contact us', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/contact_us' }
+  ];
+
+  const policyLinksJSX = policyLinks.map(item => (
+    <li key={item.id} className='footer-link'>
+      <a href={`http://localhost:8080/${item.url}`} target='_blank' rel='noopener noreferrer'>
+        {item.name}
+      </a>
+    </li>
+  ));
+
   return (
     <footer className='footer'>
       <Container>
@@ -51,10 +69,10 @@ const Footer = () => {
           </div>
           <div className='footer-block'>
             <div className='block-title'>
-              <h3 className='text-uppercase'>Links</h3>
+              <h3 className='text-uppercase'>Privacy Policy    </h3>
             </div>
             <div className='block-content'>
-              <ul>{footerLinks}</ul>
+              <ul>{policyLinksJSX}</ul>
             </div>
           </div>
           <div className='footer-block'>
