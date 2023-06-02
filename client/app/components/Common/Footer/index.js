@@ -40,19 +40,19 @@ const Footer = () => {
   ));
 
   const policyLinks = [
-    { id: 0, name: 'Privacy Policy', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/privacy' },
-    { id: 1, name: 'Terms and Conditions', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/terms' },
-    { id: 2, name: 'Cancellation and Refund', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/refund' },
-    { id: 3, name: 'Shipping & Delivery Policy', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/shipping' },
-    { id: 4, name: 'Contact us', url: 'https://merchant.razorpay.com/policy/LuxfcW7u2mDHiS/contact_us' }
+    { id: 0, name: 'Privacy Policy', to: 'privacy' },
+    { id: 1, name: 'Terms and Conditions', to: 'terms' },
+    { id: 2, name: 'Cancellation and Refund', to: 'refund' },
+    { id: 3, name: 'Shipping & Delivery Policy', to: 'shippingpolicy' },
+    { id: 4, name: 'Contact us', to: 'contact' }
   ];
 
   const policyLinksJSX = policyLinks.map(item => (
     <li key={item.id} className='footer-link'>
-      <a href={`http://localhost:8080/${item.url}`} target='_blank' rel='noopener noreferrer'>
-        {item.name}
-      </a>
-    </li>
+    <Link key={item.id} to={item.to}>
+      {item.name}
+    </Link>
+  </li>
   ));
 
   return (
@@ -69,7 +69,7 @@ const Footer = () => {
           </div>
           <div className='footer-block'>
             <div className='block-title'>
-              <h3 className='text-uppercase'>Privacy Policy    </h3>
+              <h3 className='text-uppercase'>Consumer Policy </h3>
             </div>
             <div className='block-content'>
               <ul>{policyLinksJSX}</ul>

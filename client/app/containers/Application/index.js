@@ -39,6 +39,11 @@ import Payment from '../Payment';
 
 import Return from '../Return';
 
+import Privacy from '../ConsumerPolicy/Privacy';
+import Refund from '../ConsumerPolicy/Refund'
+import ShippingPolicy from '../ConsumerPolicy/ShipingPolicy'
+import Terms from '../ConsumerPolicy/Terms'
+
 
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
@@ -101,6 +106,10 @@ class Application extends React.PureComponent {
                 <Route path='/checkout' component={Checkout} />
                 <Route path='/shipping' component={Shipping} />
                 <Route path='/checkoutsummary' component={CheckoutSummary} />
+                <Route path='/privacy' component={Privacy} />
+                <Route path='/refund' component={Refund} />
+                <Route path='/shippingpolicy' component={ShippingPolicy} />
+                <Route path='/terms' component={Terms} />
 
                 <Route
                   path='/merchant-signup/:token'
@@ -123,6 +132,9 @@ class Application extends React.PureComponent {
                 <Route path="/payment" component={Payment} />
                 <Route path='/404' component={Page404} />
                 <Route path='*' component={Page404} />
+
+
+               
               </Switch>
             </div>
           </Container>
