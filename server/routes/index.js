@@ -5,7 +5,7 @@ const keys = require('../config/keys');
 const { apiURL } = keys.app;
 
 const api = `/${apiURL}`;
-console.log(api, "this is api")
+
 
 // api routes
 router.use(api, apiRoutes);

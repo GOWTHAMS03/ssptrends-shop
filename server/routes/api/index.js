@@ -17,10 +17,14 @@ const { createOrder } = require('./payment');
 const { payOrder } = require('./payment');
 const { paymentResponse } = require('./payment');
 const CouponRoutes = require('./coupon');
-const ReturnRoutes = require('./return')
+const ReturnRoutes = require('./return');
+const OrderTrack =require('../api/ordertrak');
 
 // auth routes
 router.use('/auth', authRoutes);
+
+//order track
+router.get('/orders/:orderId',OrderTrack)
 
 
 //payment

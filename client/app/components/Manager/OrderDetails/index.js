@@ -11,11 +11,11 @@ import { Row, Col } from 'reactstrap';
 import OrderMeta from '../OrderMeta';
 import OrderItems from '../OrderItems';
 import OrderSummary from '../OrderSummary';
+import OrderTrack from '../OrderTrack';
 
 const OrderDetails = props => {
   const { order, user, cancelOrder, updateOrderItemStatus, onBack } = props;
- 
-  console.log(order,"this is orderdetails page")
+
   
   return (
     <div className='order-details'>
@@ -34,6 +34,11 @@ const OrderDetails = props => {
         </Col>
         <Col xs='12' lg='4' className='mt-5 mt-lg-0'>
           <OrderSummary order={order} />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs='12' lg='12' className='mt'>
+       <OrderTrack order={order}/>
         </Col>
       </Row>
     </div>
