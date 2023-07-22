@@ -1,5 +1,5 @@
 const Mongoose = require('mongoose');
-
+const { RETURNORDER_STATUS } = require('../constants');
 const { Schema } = Mongoose;
 
 const returnRequestSchema = new Schema({
@@ -14,6 +14,15 @@ const returnRequestSchema = new Schema({
   refundMethod: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    default: RETURNORDER_STATUS.Waiting_Approval,
+    enum: [
+      RETURNORDER_STATUS.Waiting_Approval,
+      RETURNORDER_STATUS.Rejected,
+      RETURNORDER_STATUS.Approved
+    ]
   },
   createdAt: {
     type: Date,

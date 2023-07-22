@@ -15,6 +15,8 @@ import SubPage from '../../components/Manager/SubPage';
 import NotFound from '../../components/Common/NotFound';
 
 class Edit extends React.PureComponent {
+
+  
   componentDidMount() {
     this.props.resetProduct();
     const productId = this.props.match.params.id;

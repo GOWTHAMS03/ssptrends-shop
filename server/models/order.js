@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     ref: 'Cart'
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User'
   },
   total: {
@@ -85,6 +85,11 @@ const orderSchema = new mongoose.Schema({
       type: Number
     }
   }],
+
+  paymentMethod:{
+    type: String
+
+  },
   created: {
     type: Date,
     default: Date.now

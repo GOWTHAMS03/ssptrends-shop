@@ -4,6 +4,12 @@ exports.ROLES = {
   Merchant: 'ROLE MERCHANT'
 };
 
+exports.RETURNORDER_STATUS = {
+  Rejected: 'Rejected',
+  Approved: 'Approved',
+  Waiting_Approval: 'Waiting Approval'
+}
+
 exports.MERCHANT_STATUS = {
   Rejected: 'Rejected',
   Approved: 'Approved',

@@ -44,6 +44,11 @@
       "prefix": "/dashboard"
     },
     {
+      "to": "/returnorder",
+      "name": "Return Orders",
+      "prefix": "/dashboard"
+    },
+    {
       "to": "/merchant",
       "name": "Merchants",
       "prefix": "/dashboard"

@@ -38,9 +38,6 @@ class Shipping extends React.Component {
   render() {
     const { addressFormData, addresses, formErrors, history } = this.props;
 
-    console.log(addresses, 'this is a list of addresses in shipping');
-    console.log(addressFormData, 'this is a list of addressFormData in shipping');
-
     return (
       <SubPage
         title='Shipping Address'
@@ -168,7 +165,7 @@ class Shipping extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
+
   return {
     addresses: state.address.addresses,
     addressFormData: state.address.addressFormData,

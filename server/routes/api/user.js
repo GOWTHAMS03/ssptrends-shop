@@ -14,12 +14,16 @@ router.get('/search', auth, role.check(ROLES.Admin), async (req, res) => {
 
     const regex = new RegExp(search, 'i');
 
+  
+
     const users = await User.find(
       {
         $or: [
+          { _id: { $regex: regex } },
           { firstName: { $regex: regex } },
           { lastName: { $regex: regex } },
-          { email: { $regex: regex } }
+          { email: { $regex: regex } },
+          
         ]
       },
       { password: 0, _id: 0 }

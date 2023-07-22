@@ -9,7 +9,7 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 
 const CartSummary = props => {
-  const { cartTotal } = props;
+  const { cartTotal,shppingPrice } = props;
 
   return (
     <div className='cart-summary'>
@@ -18,8 +18,8 @@ const CartSummary = props => {
           <Col xs='9'>
             <p className='summary-label'>Free Shippling</p>
           </Col>
-          <Col xs='3' className='text-right'>
-            <p className='summary-value'>₹0</p>
+          <Col xs='3' className=''>
+            <p className=''>₹ {shppingPrice} </p>
           </Col>
         </Row>
         <Row className='mb-2 summary-item'>
@@ -27,7 +27,7 @@ const CartSummary = props => {
             <p className='summary-label'>Total</p>
           </Col>
           <Col xs='3' className='text-right'>
-            <p className='summary-value'>₹{cartTotal}</p>
+            <p className=''>₹{cartTotal}</p>
           </Col>
         </Row>
       </Container>

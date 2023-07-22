@@ -1,31 +1,33 @@
-/**
- *
- * OrderMeta
- *
- */
-
-import React from 'react';
-
+import React, { useState } from 'react';
 import { Row, Col } from 'reactstrap';
-
 import { CART_ITEM_STATUS } from '../../../constants';
 import { formatDate } from '../../../utils/date';
 import Button from '../../Common/Button';
 import { ArrowBackIcon } from '../../Common/Icon';
+import AddOrderReturn from '../../../components/Store/ReturnOrder';
 
-const OrderMeta = props => {
-  const { order, cancelOrder, onBack, addresses } = props;
-
-
+const OrderMeta = (props) => {
+  const { order, cancelOrder, users, onBack, addresses,returnOrder } = props;
+  const [showReturnComponent, setShowReturnComponent] = useState(false);
 
 
   const renderMetaAction = () => {
     const isNotDelivered =
-      order.products.filter(i => i.status === CART_ITEM_STATUS.Delivered)
+      order.products.filter((i) => i.status === CART_ITEM_STATUS.Delivered)
         .length < 1;
 
     if (isNotDelivered) {
-      return <Button size='sm' text='Cancel Order' onClick={cancelOrder} />;
+      return (
+        <Button size='sm' text='Cancel Order' onClick={cancelOrder} />
+      );
+    } else {
+      return (
+        <Button
+          size='sm'
+          text='Return'
+          onClick={() => setShowReturnComponent(true)}
+        />
+      );
     }
   };
 
@@ -45,11 +47,9 @@ const OrderMeta = props => {
       <Row>
         <Col xs='12' md='8'>
           <Row>
-            <Col xs='4'>
-              <p className='one-line-ellipsis'>Order ID</p>
-            </Col>
+           
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{` ${order._id}`}</span>
+              <span className='order-label one-line-ellipsis'>{order.reasonForReturn}</span>
             </Col>
           </Row>
           <Row>
@@ -57,24 +57,31 @@ const OrderMeta = props => {
               <p className='one-line-ellipsis'>Order Date</p>
             </Col>
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{` ${formatDate(
-                order.created
-              )}`}</span>
+              <span className='order-label one-line-ellipsis'>{` ${formatDate(order.created)}`}</span>
             </Col>
+            
           </Row>
           <Row>
             <Col xs='4'>
               <p className='one-line-ellipsis'>Order Address</p>
             </Col>
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{ ` ${order.addressFormData.address}, `}</span>
-              <span className='order-label one-line-ellipsis'>{`${order.addressFormData.phonenumber}`}</span>
+              <span className='order-label one-line-ellipsis'>{` ${order.addressFormData.address}, `}</span>
+         
               <span className='order-label one-line-ellipsis'>{`${order.addressFormData.city}, ${order.addressFormData.state}, ${order.addressFormData.zipCode}, ${order.addressFormData.country}`}</span>
             </Col>
           </Row>
           <Row>
+          <Col xs='4'>
+              <p className='one-line-ellipsis'>Phone Number</p>
+            </Col>
+            <Col xs='8'>
+            <span className='order-label one-line-ellipsis'>{`${order.addressFormData.phonenumber}`}</span>
+            </Col>
+          </Row>
+          <Row>
             <Col xs='4'>
-              <p className='one-line-ellipsis'>Order User</p>
+              <p className='one-line-ellipsis'>Customer Name</p>
             </Col>
             <Col xs='8'>
               <span className='order-label one-line-ellipsis'>{order.user}</span>
@@ -85,6 +92,9 @@ const OrderMeta = props => {
           {renderMetaAction()}
         </Col>
       </Row>
+
+      {/* Show return component only when the button is clicked */}
+      {showReturnComponent && <AddOrderReturn  />}
     </div>
   );
 };

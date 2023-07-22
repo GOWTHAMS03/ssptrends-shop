@@ -16,11 +16,14 @@ import { sortOptions } from '../../utils/store';
 import ProductsShop from '../ProductsShop';
 import sizesShop from '../SizesShop';
 import CategoryShop from '../CategoryShop';
+import CategoryAndSize  from '../CategoryandSizeShop'
 
 import Page404 from '../../components/Common/Page404';
 import ProductFilter from '../../components/Store/ProductFilter';
 import Pagination from '../../components/Common/Pagination';
 import SelectOption from '../../components/Common/SelectOption';
+
+
 
 class Shop extends React.PureComponent {
   componentDidMount() {
@@ -98,6 +101,7 @@ class Shop extends React.PureComponent {
               <Route exact path='/shop' component={ProductsShop} />
               <Route path='/shop/category/:slug' component={CategoryShop} />
               <Route path='/shop/size/:slug' component={sizesShop} />
+              <Route path='/shop/:category/:size' component={CategoryAndSize}/>
               <Route path='*' component={Page404} />
             </Switch>
 
@@ -117,7 +121,7 @@ class Shop extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  console.log(state, "this is state")
+
   return {
     advancedFilters: state.product.advancedFilters,
     products: state.product.storeProducts

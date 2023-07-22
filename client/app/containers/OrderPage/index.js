@@ -18,6 +18,7 @@ class OrderPage extends React.PureComponent {
   componentDidMount() {
     const id = this.props.match.params.id;
     this.props.fetchOrder(id);
+    this.props.fetchUsers();
   }
 
   componentDidUpdate(prevProps) {
@@ -31,14 +32,13 @@ class OrderPage extends React.PureComponent {
     const {
       history,
       order,
-      orders,
+      returnOrder,
       user,
+      users,
       isLoading,
       cancelOrder,
       updateOrderItemStatus
     } = this.props;
-
-  
 
     return (
       <div className='order-page'>
@@ -46,8 +46,10 @@ class OrderPage extends React.PureComponent {
           <LoadingIndicator backdrop />
         ) : order._id ? (
           <OrderDetails
+          returnOrder={returnOrder}
             order={order}
             user={user}
+            users={users}
             cancelOrder={cancelOrder}
             updateOrderItemStatus={updateOrderItemStatus}
             onBack={() => {
@@ -69,8 +71,10 @@ class OrderPage extends React.PureComponent {
 const mapStateToProps = state => {
 
   return {
+    users: state.users.users,
     user: state.account.user,
     order: state.order.order,
+    returnOrder:state.returnOrder,
     orders :state.order.orders,
     isLoading: state.order.isLoading
   };

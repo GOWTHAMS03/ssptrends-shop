@@ -50,7 +50,7 @@ export const fetchOrders = (page = 1) => {
 
       const { orders, totalPages, currentPage, count } = response.data;
 
-      console.log(orders,"this is that order")
+      
 
       dispatch({
         type: FETCH_ORDERS,
@@ -104,6 +104,8 @@ export const fetchAccountOrders = (page = 1) => {
   };
 };
 
+
+
 export const searchOrders = filter => {
   return async (dispatch, getState) => {
     try {
@@ -141,7 +143,6 @@ export const fetchOrder = (id, withLoading = true) => {
         payload: response.data.order
       });
 
-      console.log(response.data.order,"this is response data")
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -197,7 +198,7 @@ export const updateOrderItemStatus = (itemId, status) => {
   };
 };
 
-export const addOrder = (addressFormData, orderitems) => {
+export const addOrder = (addressFormData, orderitems,paymentMethod) => {
   return async (dispatch, getState) => {
     try {
       const cartId = localStorage.getItem('cart_id');
@@ -208,7 +209,8 @@ export const addOrder = (addressFormData, orderitems) => {
           cartId,
           total,
           addressFormData,
-          orderitems
+          orderitems,
+          paymentMethod
         });
 
         dispatch(push(`/order/success/${response.data.order._id}`));
@@ -220,15 +222,16 @@ export const addOrder = (addressFormData, orderitems) => {
   };
 };
 
-export const placeOrder = (addressFormData, orderitems) => {
+export const placeOrder = (addressFormData, orderitems,paymentMethod) => {
   return async (dispatch, getState) => {
     const token = localStorage.getItem('token');
     const cartItems = getState().cart.cartItems;
 
+
     if (token && cartItems.length > 0) {
       try {
         await dispatch(getCartId());
-        await dispatch(addOrder(addressFormData, orderitems));
+        await dispatch(addOrder(addressFormData, orderitems,paymentMethod));
         
       } catch (error) {
         handleError(error, dispatch);

@@ -52,6 +52,8 @@ class Users extends React.PureComponent {
     const { users, isLoading, searchedUsers, searchUsers, advancedFilters } =
       this.props;
 
+      
+
     const { search } = this.state;
     const isSearch = search.length > 0;
     const filteredUsers = search ? searchedUsers : users;
@@ -88,6 +90,8 @@ class Users extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
+
+  console.log(state,"this is state of users");
   return {
     users: state.users.users,
     searchedUsers: state.users.searchedUsers,

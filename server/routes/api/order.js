@@ -13,16 +13,20 @@ const { ROLES, CART_ITEM_STATUS } = require('../../constants');
 
 router.post('/add', auth, async (req, res) => {
   try {
-    const { cartId, total, addressFormData, orderitems } = req.body;
-    const user = req.user._id;
-
+    const { cartId, total, addressFormData, orderitems,paymentMethod } = req.body;
+    const firstname = req.user.firstName;
+    const lastname = req.user.lastName;
+    const user = firstname+lastname
+console.log(user);
+  
 
     const order = new Order({
       cart: cartId,
       user,
       total,
       addressFormData,
-      orderitems
+      orderitems,
+      paymentMethod
     });
 
     const orderDoc = await order.save();
@@ -41,7 +45,8 @@ router.post('/add', auth, async (req, res) => {
       total: orderDoc.total,
       products: cartDoc.products,
       addressFormData: cartDoc.addressFormData,
-      orderitems: cartDoc.orderitems
+      orderitems: cartDoc.orderitems,
+      paymentMethod:cartDoc.paymentMethod
     };
 
     await mailgun.sendEmail(order.user.email, 'order-confirmation', newOrder);
@@ -158,7 +163,7 @@ router.get('/', auth, async (req, res) => {
 
     const orders = store.formatOrders(ordersDoc);
 
-    console.log(orders,"this is reducers");
+    
 
 
     res.status(200).json({
@@ -260,7 +265,7 @@ router.get('/:orderId', auth, async (req, res) => {
       user:orderDoc?.user,
       cartId: orderDoc.cart._id
     };
-    console.log(order,"this is gowtham")
+   
     order = store.caculateTaxAmount(order);
 
     res.status(200).json({

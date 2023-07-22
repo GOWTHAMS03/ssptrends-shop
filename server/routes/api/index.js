@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const authRoutes = require('./auth');
 const userRoutes = require('./user');
 const addressRoutes = require('./address');
@@ -13,12 +12,13 @@ const cartRoutes = require('./cart');
 const orderRoutes = require('./order');
 const reviewRoutes = require('./review');
 const wishlistRoutes = require('./wishlist');
-const { createOrder } = require('./payment');
-const { payOrder } = require('./payment');
-const { paymentResponse } = require('./payment');
 const CouponRoutes = require('./coupon');
 const ReturnRoutes = require('./return');
 const OrderTrack =require('../api/ordertrak');
+
+const { createOrder } = require('./payment');
+const { payOrder } = require('./payment');
+const { paymentResponse } = require('./payment');
 
 // auth routes
 router.use('/auth', authRoutes);
@@ -32,7 +32,7 @@ router.get('/getrazorpaykey', (req, res) => {
   res.send({ key: process.env.RAZORPAY_KEY_ID });
 });
 
-router.post("/createorder", createOrder);
+router.post('/create-payment-intent', createOrder);
 router.post('/payorder', payOrder);
 router.get('/payres', paymentResponse);
 
@@ -43,7 +43,7 @@ router.use('/user', userRoutes);
 router.use('/coupons', CouponRoutes);
 
 // retunr routes
-router.use('/return-request', ReturnRoutes);
+router.use('/returnrequest', ReturnRoutes);
 
 // address routes
 router.use('/address', addressRoutes);

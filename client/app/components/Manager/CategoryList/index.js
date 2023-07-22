@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 const CategoryList = props => {
   const { categories } = props;
 
+
   return (
     <div className='c-list'>
       {categories.map((category, index) => (

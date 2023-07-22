@@ -4,6 +4,10 @@ const passport = require('passport');
 
 // Bring in Models & Utils
 const Category = require('../../models/category');
+const CategoryModel = require('../../models/category');
+const Product = require('../../models/product');
+const Size = require('../../models/size')
+
 const auth = require('../../middleware/auth');
 const role = require('../../middleware/role');
 const store = require('../../utils/store');
@@ -42,6 +46,59 @@ router.post('/add', auth, role.check(ROLES.Admin), (req, res) => {
     });
   });
 });
+
+
+router.get('/:category/:size', async (req, res) => {
+  try {
+    const categoryName = req.params.category;
+    const sizeParam = req.params.size;
+
+    const category = await CategoryModel.findOne({ name: categoryName });
+
+   
+
+    if (!category) {
+      return res.status(404).json({
+        message: `Cannot find category with the name: ${categoryName}.`
+      });
+    }
+
+    const productIds = category.products;
+
+    
+
+    const sizes = await Size.find({ name: sizeParam });
+
+   
+    if (!sizes || sizes.length === 0) {
+      return res.status(404).json({
+        message: `No sizes found for the product IDs.`
+      });
+    }
+
+    const sizeIds = sizes.map(size => size._id);
+
+    const products = await Product.find({
+      size: { $in: sizeIds },
+      _id: { $in: productIds }
+    });
+
+
+    res.status(200).json({
+      categoryandsize: {
+        
+        categoryandsize: products
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
+});
+
+
 
 // fetch store categories api
 router.get('/list', async (req, res) => {

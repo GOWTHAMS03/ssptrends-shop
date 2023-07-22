@@ -1,18 +1,19 @@
-/*
- *
- * NavigationMenu reducer
- *
- */
+import { DEFAULT_ACTION, SIZECATEGORY } from './constants';
 
-import { DEFAULT_ACTION } from './constants';
-
-const initialState = {};
+const initialState = {
+  loading: false,
+  productsBySize: [],
+};
 
 const navigationMenuReducer = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
+      // Handle default action if needed
+      return state;
+    case SIZECATEGORY:
       return {
-        ...state
+        ...state,
+        productsBySize: action.payload,
       };
     default:
       return state;

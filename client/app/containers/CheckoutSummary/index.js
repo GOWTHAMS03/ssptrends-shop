@@ -22,6 +22,26 @@ const Checkout = (props) => {
     placeOrder(addressFormData, orderitems);
   };
 
+ const renderOrderDetails = item =>{
+
+if(item){
+  return (
+                 
+      <div className="item-details">
+                      
+          <div key={item._id}>
+            <img src={item.imageUrl[0]} alt={item.name} />
+                    </div>
+        
+              </div>
+    )
+
+}
+else {
+  return <img className='item-image' src='/images/placeholder-image.png' />;
+}
+  }
+
   return (
     <div>
       <div>
@@ -34,22 +54,51 @@ const Checkout = (props) => {
         <p>{addressFormData.phonenumber}</p>
         <p>{addressFormData.country}</p>
       </div>
-      <div>
-        {orderitems.items && orderitems.items.length > 0 && (
-          <div className="item-details">
-            <p>Order Details:</p>
-            {orderitems.items.map((item) => (
-              <div key={item._id}>
-                <img src={item.imageUrl[0]} alt={item.name} />
-                <p>{item.name}</p>
+      
+<div className='order-list'>
+        
+        {orderitems.items.map((item,index) => (
+
+      <div key={index} className='order-box'>
+        <div  className='d-block box-link'>
+      <div className='d-flex flex-column flex-lg-row mb-3' >
+
+        <div className='order-first-item p-lg-3'>
+         
+          {renderOrderDetails(item)}
+        </div>
+
+         <div className='d-flex flex-column flex-xl-row justify-content-between flex-1 ml-lg-2 mr-xl-4 p-3'>
+                <div className='order-details'>
+                  <div className='mb-1'>
+                    <span>Status</span>
+                    
+                  </div>
+                  <div className='mb-1'>
+                    <span>Order #</span>
+                    <span className='order-label'>{``}</span>
+                  </div>
+                  <div className='mb-1'>
+                    <span>Ordered on</span>
+                    <span className='order-label'>{``}</span>
+                  </div>
+                  <div className='mb-1'>
+                    <span>Order Total</span>
+                    <span className=''>  ₹{``}</span>
+                  </div>
+                  <div>
+                   
+                  </div>
+                </div>
               </div>
-            ))}
-            <h3>
-              Total: <h2>{orderitems.total}</h2>
-            </h3>
-          </div>
-        )}
-      </div>
+              </div>
+              </div>
+              </div>
+        ))}
+       
+       </div>
+     
+    
       <div>
         <div className='parent-container'>
           {/* Render the PaymentForm component */}

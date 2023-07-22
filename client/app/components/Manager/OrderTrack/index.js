@@ -30,21 +30,12 @@ const OrderTrack = props => {
       <p>Order ID: {order && order._id}</p>
       {error && <p>{error}</p>}
       {trackingDetails && (
-        <div>
-          <p>Status: {trackingDetails.Status}</p>
-          <p>Shipment Date: {trackingDetails.ShipmentDate}</p>
-          <p>Consignee: {trackingDetails.Consignee}</p>
-          <p>Destination: {trackingDetails.Destination}</p>
-          <p>Origin: {trackingDetails.Origin}</p>
-          <p>Current Location: {trackingDetails.CurrentLocation}</p>
-          <p>Estimated Delivery: {trackingDetails.EstimatedDelivery}</p>
-          <p>Sender: {trackingDetails.Sender}</p>
-          <p>Receiver: {trackingDetails.Receiver}</p>
-          <p>Weight: {trackingDetails.Weight}</p>
-          <p>Dimensions: {trackingDetails.Dimensions}</p>
-          <p>Remarks: {trackingDetails.Remarks}</p>
-          {/* ... other tracking details */}
-        </div>
+         <div>
+         <h2>Order Details</h2>
+         <p>Order ID: {trackingDetails.orderId}</p>
+         <p>Status: {trackingDetails.status}</p>
+         <p>Location: {trackingDetails.location}</p>
+       </div>
       )}
     </Col>
   );

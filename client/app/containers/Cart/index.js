@@ -73,6 +73,7 @@ class Cart extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     isCartOpen: state.navigation.isCartOpen,
     cartItems: state.cart.cartItems,

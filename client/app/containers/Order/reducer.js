@@ -33,7 +33,7 @@ const initialState = {
   }
 };
 
-console.log(initialState,"this is initialState")
+
 
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {

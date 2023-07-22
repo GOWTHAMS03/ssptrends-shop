@@ -24,31 +24,21 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
   const handlePayment = async () => {
     setLoading(true);
 
-    if (paymentMethod === 'cod') {
-      if (captcha === generatedCaptcha) {
-        // Perform cash on delivery logic
-        try {
-          // Make an API request to place the order
-          await axios.post(`${url}/placeorder`, {
-            address: addressFormData,
-            items: orderitems,
-            paymentMethod: 'Cash on Delivery',
-          });
-
-          // Dispatch the placeOrder action with addressFormData and orderitems
-          placeOrder(addressFormData, orderitems);
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        setCaptchaError('Invalid captcha. Please enter the correct number.');
+    if (paymentMethod === 'cod' && captcha === generatedCaptcha) {
+      try {
+       
+        // Dispatch the placeOrder action with addressFormData, orderitems, and paymentMethod
+        placeOrder(addressFormData, orderitems, 'Cash on Delivery');
+      } catch (error) {
+        console.log(error);
       }
     } else if (paymentMethod === 'online') {
-      // Perform online payment logic
       try {
+        // Implement your online payment logic using Razorpay or any other payment gateway
         // ...
-        // Your existing online payment logic
-        // ...
+
+        // After successful payment, you can dispatch the placeOrder action with addressFormData, orderitems, and paymentMethod
+        placeOrder(addressFormData, orderitems, 'Online Payment');
       } catch (err) {
         alert(err);
       }
@@ -56,6 +46,8 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
 
     setLoading(false);
   };
+
+  const isProceedEnabled = paymentMethod === 'online' || (paymentMethod === 'cod' && captcha === generatedCaptcha);
 
   return (
     <div>
@@ -99,8 +91,8 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
       <div>
         <Button
           type="submit"
-          disabled={loading}
-          text="Proceed to Payment"
+          disabled={loading || !isProceedEnabled}
+          text={paymentMethod === 'online' ? 'Proceed to Payment' : 'Proceed'}
           onClick={handlePayment}
         />
       </div>

@@ -122,12 +122,14 @@ export const fetchStoreProduct = slug => {
   return async (dispatch, getState) => {
     dispatch(setProductLoading(true));
 
+
     try {
       const response = await axios.get(`/api/product/item/${slug}`);
 
       const inventory = response.data.product.quantity;
       const product = { ...response.data.product, inventory };
 
+      console.log(product,"hi product")
       dispatch({
         type: FETCH_STORE_PRODUCT,
         payload: product

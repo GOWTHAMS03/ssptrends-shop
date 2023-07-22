@@ -1,71 +1,78 @@
-import React, { useState } from 'react';
+/*
+ *
+ * Review
+ *
+ */
 
-const Return = () => {
-  const [orderNumber, setOrderNumber] = useState('');
-  const [reason, setReason] = useState('');
-  const [refundMethod, setRefundMethod] = useState('');
+import React from 'react';
+import { connect } from 'react-redux';
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+import actions from '../../actions';
 
-    const { orderNumber, reason, refundMethod } = e.target.elements;
+import SubPage from '../../components/Manager/SubPage';
+import ReturnOrderList from '../../components/Store/ReturnOrder';
+import SearchResultMeta from '../../components/Manager/SearchResultMeta';
+import LoadingIndicator from '../../components/Common/LoadingIndicator';
+import NotFound from '../../components/Common/NotFound';
+import Pagination from '../../components/Common/Pagination';
 
-    // Check if all fields are filled out
-    if (!orderNumber.value || !reason.value || !refundMethod.value) {
-      alert('Please fill out all fields');
-      return;
-    }
+class ReturnOrder extends React.PureComponent {
+  componentDidMount() {
+    this.props.fetchReviews();
+  }
 
-    // Send the return request to the server
-    try {
-      const response = await fetch('/api/return-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderNumber: orderNumber.value,
-          reason: reason.value,
-          refundMethod: refundMethod.value,
-        }),
-      });
+  render() {
+    const {
+      reviews,
+      isLoading,
+      advancedFilters,
+      fetchReviews,
+      approveReview,
+      rejectReview,
+      deleteReview
+    } = this.props;
 
-      // Check if the return request was successful
-      if (response.ok) {
-        alert('Return request submitted successfully');
-        // Clear the form fields
-        e.target.reset();
-      } else {
-        const errorMessage = await response.text();
-        alert(`Return request failed: ${errorMessage}`);
-      }
-    } catch (error) {
-     
-      alert('Return request failed');
-    }
+    const displayPagination = advancedFilters.totalPages > 1;
+    const displayReviews = reviews && reviews.length > 0;
+
+    return (
+      <div className='review-dashboard'>
+        <SubPage title={'Reviews'} isMenuOpen={null}>
+          {isLoading && <LoadingIndicator />}
+
+          {displayPagination && (
+            <Pagination
+              totalPages={advancedFilters.totalPages}
+              onPagination={fetchReviews}
+            />
+          )}
+          {displayReviews && (
+            <>
+              <SearchResultMeta label='reviews' count={advancedFilters.count} />
+              <ReturnOrderList
+                reviews={reviews}
+                approveReview={approveReview}
+                rejectReview={rejectReview}
+                deleteReview={deleteReview}
+              />
+            </>
+          )}
+
+          {!isLoading && !displayReviews && (
+            <NotFound message='No reviews found.' />
+          )}
+        </SubPage>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    returnOrder: state.returnOrder.returnorder,
+    isLoading: state.returnOrder.returnorder,
+    advancedFilters: state.returnOrder.advancedFilters
   };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Order Number:
-        <input type="text" value={orderNumber} onChange={(e) => setOrderNumber(e.target.value)} />
-      </label>
-      <label>
-        Reason for Return:
-        <textarea value={reason} onChange={(e) => setReason(e.target.value)} />
-      </label>
-      <label>
-        Refund Method:
-        <select value={refundMethod} onChange={(e) => setRefundMethod(e.target.value)}>
-          <option value="credit">Credit</option>
-          <option value="debit">Debit</option>
-          <option value="paypal">PayPal</option>
-        </select>
-      </label>
-      <button type="submit">Submit</button>
-    </form>
-  );
 };
 
-export default Return;
+export default connect(mapStateToProps, actions)(ReturnOrder);

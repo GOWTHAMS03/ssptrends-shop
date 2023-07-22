@@ -89,6 +89,7 @@ export const fetchsize = sizeId => {
     try {
       const response = await axios.get(`/api/size/${sizeId}`);
 
+      
       dispatch({
         type: FETCH_SIZE,
         payload: response.data.size

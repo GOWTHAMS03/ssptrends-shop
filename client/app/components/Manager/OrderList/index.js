@@ -13,7 +13,7 @@ import { formatDate } from '../../../utils/date';
 const OrderList = props => {
   const { orders } = props;
 
-  console.log(orders,"this is order list")
+
 
   const renderFirstItem = order => {
     if (order.products) {
@@ -64,7 +64,7 @@ const OrderList = props => {
                   </div>
                   <div className='mb-1'>
                     <span>Order Total</span>
-                    <span className='order-label'>{` ₹${order?.totalWithTax ? order?.totalWithTax : 0
+                    <span className=''>  ₹{`${order?.totalWithTax ? order?.totalWithTax : 0
                       }`}</span>
                   </div>
                   <div>

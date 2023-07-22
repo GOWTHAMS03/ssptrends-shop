@@ -22,8 +22,11 @@ const upload = multer({ storage });
 
 // fetch product slug api
 router.get('/item/:slug', async (req, res) => {
+
   try {
     const slug = req.params.slug;
+  
+    
 
     const productDoc = await Product.findOne({ slug, isActive: true }).populate(
       {
@@ -150,6 +153,7 @@ router.get('/list', async (req, res) => {
 // fetch store products by brand api
 router.get('/list/size/:slug', async (req, res) => {
   try {
+    console.log(req)
     const slug = req.params.slug;
 
     const size = await Size.findOne({ slug, isActive: true });
@@ -160,7 +164,10 @@ router.get('/list/size/:slug', async (req, res) => {
       });
     }
 
+  
+
     const userDoc = await checkAuth(req);
+
 
     if (userDoc) {
       const products = await Product.aggregate([
@@ -260,9 +267,9 @@ router.post(
   role.check(ROLES.Admin, ROLES.Merchant),
   upload.single('image'),
   async (req, res) => {
-    console.log(res)
+   
     try {
-      const sku = req.body.sku;
+      // const sku = req.body.sku;
       const name = req.body.name;
       const description = req.body.description;
       const quantity = req.body.quantity;
@@ -272,9 +279,9 @@ router.post(
       const size = req.body.size;
       const image = req.file;
 
-      if (!sku) {
-        return res.status(400).json({ error: 'You must enter sku.' });
-      }
+      // if (!sku) {
+      //   return res.status(400).json({ error: 'You must enter sku.' });
+      // }
 
       if (!description || !name) {
         return res
@@ -290,11 +297,11 @@ router.post(
         return res.status(400).json({ error: 'You must enter a price.' });
       }
 
-      const foundProduct = await Product.findOne({ sku });
+      // const foundProduct = await Product.findOne({ sku });
 
-      if (foundProduct) {
-        return res.status(400).json({ error: 'This sku is already in use.' });
-      }
+      // if (foundProduct) {
+      //   return res.status(400).json({ error: 'This sku is already in use.' });
+      // }
 
       
       const { imageUrl, imageKey } = await s3Upload(image);
@@ -302,7 +309,7 @@ router.post(
 
 
       const product = new Product({
-        sku,
+       
         name,
         description,
         quantity,

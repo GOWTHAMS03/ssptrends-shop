@@ -24,7 +24,7 @@ const seedDB = async () => {
     });
 
     const existingUser = await User.findOne({ email: user.email });
-    console.log('existingUser', existingUser);
+   
     if (existingUser) throw new Error('user collection is seeded!');
 
     const salt = await bcrypt.genSalt(10);

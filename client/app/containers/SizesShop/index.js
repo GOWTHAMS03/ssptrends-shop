@@ -28,7 +28,9 @@ class sizesShop extends React.PureComponent {
 
   render() {
     const { products, isLoading, authenticated, updateWishlist } = this.props;
+    console.log(products,"this is size shop")
 
+    
     return (
       <div className='sizes-shop'>
         {isLoading ? (

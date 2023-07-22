@@ -11,7 +11,7 @@ import { Row, Col } from 'reactstrap';
 
 import AccountMenu from '../AccountMenu';
 import Page404 from '../../Common/Page404';
-
+import ReturnOrder from '../../../containers/Return';
 import { isProviderAllowed } from '../../../utils/app';
 import Account from '../../../containers/Account';
 import AccountSecurity from '../../../containers/AccountSecurity';
@@ -35,6 +35,8 @@ const Customer = props => {
               {!isProviderAllowed(user.provider) && (
                 <Route path='/dashboard/security' component={AccountSecurity} />
               )}
+               <Route path='/dashboard/returnorder' component={ReturnOrder} />
+          
               <Route path='/dashboard/address' component={Address} />
               <Route path='/dashboard/orders' component={Order} />
               <Route path='/dashboard/wishlist' component={Wishlist} />
