@@ -17,7 +17,7 @@ router.post('/add', auth, async (req, res) => {
     const firstname = req.user.firstName;
     const lastname = req.user.lastName;
     const user = firstname+lastname
-console.log(user);
+
   
 
     const order = new Order({

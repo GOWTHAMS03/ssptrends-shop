@@ -25,6 +25,7 @@ import { allFieldsValidation, santizeFields } from '../../utils/validation';
 export const reviewChange = (name, value) => {
   let formData = {};
   formData[name] = value;
+
   return {
     type: REVIEW_CHANGE,
     payload: formData

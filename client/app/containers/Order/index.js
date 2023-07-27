@@ -40,7 +40,7 @@ class Order extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  console.log(state)
+ 
   return {
     user: state.account.user
   };

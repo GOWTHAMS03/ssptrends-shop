@@ -14,8 +14,7 @@
  const OrderItems = (props) => {
    const { order, user, users, updateOrderItemStatus } = props;
  
-   console.log(users, "this is user");
- 
+   
    const renderPopoverContent = (item) => {
      const statuses = Object.values(CART_ITEM_STATUS);
  

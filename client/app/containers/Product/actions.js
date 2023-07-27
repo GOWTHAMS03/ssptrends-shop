@@ -129,7 +129,7 @@ export const fetchStoreProduct = slug => {
       const inventory = response.data.product.quantity;
       const product = { ...response.data.product, inventory };
 
-      console.log(product,"hi product")
+     
       dispatch({
         type: FETCH_STORE_PRODUCT,
         payload: product

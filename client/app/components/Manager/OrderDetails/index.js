@@ -65,11 +65,11 @@ const OrderDetails = (props) => {
           <OrderSummary order={order} />
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col xs="12" lg="12" className="mt">
           <OrderTrack order={order} />
         </Col>
-      </Row>
+      </Row> */}
       {user.role === ROLES.Admin && (
         <Row>
           <Col xs="12" lg="12" className="mt-3">

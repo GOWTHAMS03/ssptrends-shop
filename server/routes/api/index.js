@@ -28,13 +28,13 @@ router.get('/orders/:orderId',OrderTrack)
 
 
 //payment
-router.get('/getrazorpaykey', (req, res) => {
-  res.send({ key: process.env.RAZORPAY_KEY_ID });
-});
+// router.get('/getrazorpaykey', (req, res) => {
+//   res.send({ key: process.env.RAZORPAY_KEY_ID });
+// });
 
-router.post('/create-payment-intent', createOrder);
-router.post('/payorder', payOrder);
-router.get('/payres', paymentResponse);
+// router.post('/create-payment-intent', createOrder);
+// router.post('/payorder', payOrder);
+// router.get('/payres', paymentResponse);
 
 // user routes
 router.use('/user', userRoutes);
@@ -43,7 +43,7 @@ router.use('/user', userRoutes);
 router.use('/coupons', CouponRoutes);
 
 // retunr routes
-router.use('/returnrequest', ReturnRoutes);
+router.use('/returnorder', ReturnRoutes);
 
 // address routes
 router.use('/address', addressRoutes);

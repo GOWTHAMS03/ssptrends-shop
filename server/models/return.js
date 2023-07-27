@@ -2,18 +2,33 @@ const Mongoose = require('mongoose');
 const { RETURNORDER_STATUS } = require('../constants');
 const { Schema } = Mongoose;
 
-const returnRequestSchema = new Schema({
-  orderNumber: {
-    type: String,
-    required: true,
+const ReturnRequestSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
   },
-  reason: {
+  order: {
+    
+      type: Schema.Types.ObjectId,
+     },
+
+  paymentmethod:{
     type: String,
-    required: true,
+    
   },
-  refundMethod: {
+  product:[],
+  total: {
+    type: Number,
+    
+  },
+    reason: {
     type: String,
-    required: true,
+  
+  },
+  upinumber: {
+    type: String,
+    
   },
   status: {
     type: String,
@@ -30,4 +45,4 @@ const returnRequestSchema = new Schema({
   },
 });
 
-module.exports = Mongoose.model('Return', returnRequestSchema);
+module.exports = Mongoose.model('Return', ReturnRequestSchema);

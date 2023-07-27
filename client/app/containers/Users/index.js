@@ -91,7 +91,6 @@ class Users extends React.PureComponent {
 
 const mapStateToProps = state => {
 
-  console.log(state,"this is state of users");
   return {
     users: state.users.users,
     searchedUsers: state.users.searchedUsers,

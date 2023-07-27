@@ -32,12 +32,29 @@ const initialState = {
 //     totalSummary: 0
 //   },
   returnOrderFormData: {
+    // order: {
+    //   _id: '',
+    //   cartId: '',
+    //   products: [],
+    //   totalTax: 0,
+    //   total: 0,
+    //   status: '',
+    //   addressFormData:{
+    //     address:'',
+    //     city:'',
+    //     country:'',
+    //     phonenumber:'',
+    //     state:'',
+    //     zipCode:'',
+    //   },
+    //   user:''
+    // },
     upinumber: '',
     reason: '',
     
   },
   returnOrderFormErrors: {},
-  returnOrderChange:{}
+  
 };
 
 const returnOrderReducer = (state = initialState, action) => {
@@ -55,12 +72,12 @@ const returnOrderReducer = (state = initialState, action) => {
           ...action.payload
         }
       };
-    case FETCH_PRODUCT_ORDER_RETURN:
-      return {
-        ...state,
-        productReviews: action.payload.reviews,
-        reviewsSummary: action.payload.reviewsSummary
-      };
+    // case FETCH_PRODUCT_ORDER_RETURN:
+    //   return {
+    //     ...state,
+    //     productReviews: action.payload.reviews,
+    //     reviewsSummary: action.payload.reviewsSummary
+    //   };
     case ADD_ORDER_RETURN:
       return {
         ...state,
@@ -78,8 +95,8 @@ const returnOrderReducer = (state = initialState, action) => {
     case ORDER_RETURN_CHANGE:
       return {
         ...state,
-        returnOrderChange: {
-          ...state.returnOrderChange,
+        returnOrderFormData: {
+          ...state.returnOrderFormData,
           ...action.payload
         }
       };
@@ -92,13 +109,12 @@ const returnOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         returnOrderFormData: {
-          title: '',
-          review: '',
-          rating: 0,
-          isRecommended: {
-            value: 1,
-            label: 'Yes'
-          }
+
+          order:[],
+          upinumber: '',
+          reason: '',
+          
+         
         },
         returnOrderFormErrors: {}
       };

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import SubPage from '../../components/Manager/SubPage';
-import ReturnOrderList from '../../components/Store/ReturnOrder';
+import ReturnOrderList from '../../components/Manager/ReturnOrderList';
 import SearchResultMeta from '../../components/Manager/SearchResultMeta';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
 import NotFound from '../../components/Common/NotFound';
@@ -18,50 +18,35 @@ import Pagination from '../../components/Common/Pagination';
 
 class ReturnOrder extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchReviews();
+    this.props.fetchReturnOrder();
+    this.props.order
   }
 
+
   render() {
+    
     const {
-      reviews,
+      order,
+      returnOrder,
       isLoading,
       advancedFilters,
-      fetchReviews,
-      approveReview,
-      rejectReview,
-      deleteReview
+      fetchReturnOrder,
+      approveReturnOrder,
+      rejectReturnOrder,
+      deleteReturnOrder
     } = this.props;
 
-    const displayPagination = advancedFilters.totalPages > 1;
-    const displayReviews = reviews && reviews.length > 0;
-
+   
     return (
       <div className='review-dashboard'>
-        <SubPage title={'Reviews'} isMenuOpen={null}>
-          {isLoading && <LoadingIndicator />}
-
-          {displayPagination && (
-            <Pagination
-              totalPages={advancedFilters.totalPages}
-              onPagination={fetchReviews}
-            />
-          )}
-          {displayReviews && (
-            <>
-              <SearchResultMeta label='reviews' count={advancedFilters.count} />
+        <SearchResultMeta label='Order Return' count={advancedFilters.count} />
               <ReturnOrderList
-                reviews={reviews}
-                approveReview={approveReview}
-                rejectReview={rejectReview}
-                deleteReview={deleteReview}
+                returnOrder={returnOrder}
+                approveReturnOrder={approveReturnOrder}
+                rejectReturnOrder={rejectReturnOrder}
+                deleteReturnOrder={deleteReturnOrder}
               />
-            </>
-          )}
-
-          {!isLoading && !displayReviews && (
-            <NotFound message='No reviews found.' />
-          )}
-        </SubPage>
+           
       </div>
     );
   }
@@ -71,7 +56,13 @@ const mapStateToProps = state => {
   return {
     returnOrder: state.returnOrder.returnorder,
     isLoading: state.returnOrder.returnorder,
-    advancedFilters: state.returnOrder.advancedFilters
+    advancedFilters: state.returnOrder.advancedFilters,
+
+    returnOrderFormData:state.returnOrder.returnOrderFormData,
+    returnOrderChange:state.returnOrder.returnOrderChange,
+    returnOrderFormErrors:state.returnOrder.returnOrderFormErrors,
+    addReturnOrder:state.returnOrder.addReturnOrder
+
   };
 };
 

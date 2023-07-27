@@ -59,7 +59,6 @@ class Customer extends React.PureComponent {
       searchOrders
     } = this.props;
 
-    console.log(orders,"this is customer order")
     const { search } = this.state;
     const isSearch = search.length > 0;
     const filteredOrders = search ? searchedOrders : orders;

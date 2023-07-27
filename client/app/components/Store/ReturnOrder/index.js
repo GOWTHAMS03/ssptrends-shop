@@ -21,11 +21,8 @@
   render() {
    
    const { returnOrderFormData, returnOrderChange, returnOrderFormErrors, addReturnOrder } = this.props;;
-
-   console.log(returnOrderFormErrors,"return error")
-   console.log(returnOrderFormData,"returnOrderFormData")
-
-
+console.log(returnOrderFormData)
+ 
    const handleSubmit = event => {
      event.preventDefault();
      addReturnOrder();
@@ -36,36 +33,34 @@
        <form onSubmit={handleSubmit} noValidate>
          <h3 className='mb-3'>Order Return</h3>
          <Row>
-
-           <Col xs='12' md='12'>
-             <Input
-               type={'text'}
-               error={returnOrderFormErrors['UPI Number']}
-               label={'UPI Number'}
-               name={'UPI Number'}
-               placeholder={'Enter UPI Number'}
-               value={returnOrderFormData.upinumber}
-               onInputChange={(name, value) => {
+          <Col xs='12' md='12'>
+            <Input
+              type={'text'}
+              error={returnOrderFormErrors['upinumber']}
+              label={'Upinumber'}
+              name={'upinumber'}
+              placeholder={'Enter Review title'}
+              value={returnOrderFormData.upinumber}
+              onInputChange={(name, value) => {
                 returnOrderChange(name, value);
-               }}
-             />
-           </Col>
-           <Col xs='12' md='12'>
-             <Input
-               type={'textarea'}
-               error={returnOrderFormErrors['review']}
-               label={'Reason For Return'}
-               name={'Reason'}
-               placeholder={'Write Reason'}
-               value={returnOrderFormData.reason}
-               onInputChange={(name, value) => {
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12'>
+            <Input
+              type={'textarea'}
+              error={returnOrderFormErrors['reason']}
+              label={'Comment'}
+              name={'reason'}
+              placeholder={'Write Review'}
+              value={returnOrderFormData.reason}
+              onInputChange={(name, value) => {
                 returnOrderChange(name, value);
-               }}
-             />
-           </Col>
-           
-           
-         </Row>
+              }}
+            />
+          </Col>
+         
+        </Row>
          <div className='mt-4'>
            <Button type='submit' text='Place Order Return' />
          </div>
@@ -89,4 +84,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, actions)(AddOrderReturn);
- 
