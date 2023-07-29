@@ -47,18 +47,16 @@ const Checkout = (props) => {
   const handleContinueToShipping = () => {
     if (cartItems.length > 0) {
       const total = discountedPrice > 0 ? discountedPrice : cartTotal;
-      if (total < 500) {
-        alert('Please purchase items worth more than Rs 500.');
-      } else {
-        const orderitem = { items: cartItems, total: total };
-        dispatch(storeOrder(orderitem));
-        history.push('/shipping');
-      }
+      const shippingPrice = total < 500 ? 50 : 0; // Apply shipping price of 50 if total < 500, else 0
+      const orderitem = { items: cartItems, total: total + shippingPrice };
+      
+      
+      dispatch(storeOrder(orderitem));
+      history.push('/shipping');
     } else {
       history.push('/shop');
     }
   };
-  
 
   const total = discountedPrice > 0 ? discountedPrice : cartTotal;
 
@@ -101,7 +99,7 @@ const Checkout = (props) => {
           <p>Your shopping cart is empty</p>
         </div>
       )}
-      <CartSummary cartTotal={total} />
+      <CartSummary cartTotal={total}/>
       <div className="easy-checkout">
         <div className="checkout-actions">
           {authenticated ? (

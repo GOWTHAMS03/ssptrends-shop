@@ -39,8 +39,7 @@
      if (item.status === CART_ITEM_STATUS.Delivered) {
        return (
          <>
-           
-           <br></br>
+         
            <div>
              <Link
                to={`/product/${item.product.slug}`}

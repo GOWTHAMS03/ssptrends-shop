@@ -50,15 +50,11 @@ export const fetchOrders = (page = 1) => {
 
       const { orders, totalPages, currentPage, count } = response.data;
 
-      
-
       dispatch({
         type: FETCH_ORDERS,
         payload: orders
-        
       });
-      
-      
+
       dispatch({
         type: SET_ADVANCED_FILTERS,
         payload: { totalPages, currentPage, count }
@@ -104,8 +100,6 @@ export const fetchAccountOrders = (page = 1) => {
   };
 };
 
-
-
 export const searchOrders = filter => {
   return async (dispatch, getState) => {
     try {
@@ -142,7 +136,6 @@ export const fetchOrder = (id, withLoading = true) => {
         type: FETCH_ORDER,
         payload: response.data.order
       });
-
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -197,7 +190,6 @@ export const updateOrderItemStatus = (itemId, status) => {
     }
   };
 };
-
 export const addOrder = (addressFormData, orderitems,paymentMethod) => {
   return async (dispatch, getState) => {
     try {

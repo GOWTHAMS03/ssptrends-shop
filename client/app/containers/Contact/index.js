@@ -75,6 +75,9 @@ class Contact extends React.PureComponent {
             <Button type='submit' text='Submit' />
           </div>
         </form>
+
+        <span>ssp trends</span>
+        
       </div>
     );
   }

@@ -11,6 +11,7 @@ const OrderMeta = (props) => {
   const [showReturnComponent, setShowReturnComponent] = useState(false);
 
 
+
   const renderMetaAction = () => {
     const isNotDelivered =
       order.products.filter((i) => i.status === CART_ITEM_STATUS.Delivered)
@@ -94,7 +95,7 @@ const OrderMeta = (props) => {
       </Row>
 
       {/* Show return component only when the button is clicked */}
-      {showReturnComponent && <AddOrderReturn  />}
+      {showReturnComponent && <AddOrderReturn order={order} />}
     </div>
   );
 };

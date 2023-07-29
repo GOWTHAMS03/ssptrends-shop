@@ -55,7 +55,7 @@ else {
         <p>{addressFormData.country}</p>
       </div>
       
-<div className='order-list'>
+        <div className='order-list'>
         
         {orderitems.items.map((item,index) => (
 
@@ -70,21 +70,18 @@ else {
 
          <div className='d-flex flex-column flex-xl-row justify-content-between flex-1 ml-lg-2 mr-xl-4 p-3'>
                 <div className='order-details'>
-                  <div className='mb-1'>
-                    <span>Status</span>
-                    
-                  </div>
+                  
                   <div className='mb-1'>
                     <span>Order #</span>
-                    <span className='order-label'>{``}</span>
+                    <span className='order-label'>{item._id}</span>
                   </div>
                   <div className='mb-1'>
-                    <span>Ordered on</span>
-                    <span className='order-label'>{``}</span>
+                    <span>Order Name</span>
+                    <span className='order-label'>{item.createdAt}</span>
                   </div>
                   <div className='mb-1'>
                     <span>Order Total</span>
-                    <span className=''>  ₹{``}</span>
+                    <span className=''>  ₹{item.total}</span>
                   </div>
                   <div>
                    

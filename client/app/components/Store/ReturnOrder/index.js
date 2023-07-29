@@ -14,15 +14,19 @@
 
  
  class AddOrderReturn extends React.PureComponent {
-  // componentDidMount() {
+  componentDidMount() {
     
-  // }
+    this.props.order
+  }
+
+  
 
   render() {
    
-   const { returnOrderFormData, returnOrderChange, returnOrderFormErrors, addReturnOrder } = this.props;;
-console.log(returnOrderFormData)
- 
+   
+   const { returnOrderFormData, returnOrderChange, returnOrderFormErrors, addReturnOrder ,order} = this.props;;
+
+   console.log(order.paymentMethod) 
    const handleSubmit = event => {
      event.preventDefault();
      addReturnOrder();

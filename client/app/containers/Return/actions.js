@@ -1,8 +1,3 @@
-/*
- *
- * RETURN actions
- *
- */
 
 import { success } from 'react-notification-system-redux';
 import axios from 'axios';
@@ -27,7 +22,6 @@ import { allFieldsValidation, santizeFields } from '../../utils/validation';
 export const returnOrderChange = (name, value) => {
   let formData = {};
   formData[name] = value;
- 
   return {
     type: ORDER_RETURN_CHANGE,
     payload: formData
@@ -35,20 +29,25 @@ export const returnOrderChange = (name, value) => {
 };
 
 // fetch reviews api
-export const fetchReturnOrder = (n, v) => {
+export const fetchreturnorder = (n, v) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: SET_RETURN_LOADING, payload: true });
 
-      const response = await axios.get(`/api/returnorder`);
+      const response = await axios.get(`/api/returnorder`, {
+        params: {
+          page: v ?? 1,
+          limit: 20
+        }
+      });
 
-     
-      const { returnOrder} = response.data;
+      const { reviews, totalPages, currentPage, count } = response.data;
 
-      console.log(returnOrder,"sdkfjlsdjfsldjf");
-
-      dispatch({ type: FETCH_ORDER_RETURN, payload: returnOrder });
-      
+      dispatch({ type: FETCH_ORDER_RETURN, payload: reviews });
+      dispatch({
+        type: SET_ADVANCED_FILTERS,
+        payload: { totalPages, currentPage, count }
+      });
     } catch (error) {
       handleError(error, dispatch);
     } finally {
@@ -62,7 +61,7 @@ export const approveReturnOrder = returnorder => {
     try {
       await axios.put(`/api/returnorder/approve/${returnorder._id}`);
 
-      dispatch(fetchReturnOrder());
+      dispatch(fetcreturnorder());
     } catch (error) {
       handleError(error, dispatch);
     }
@@ -74,7 +73,7 @@ export const rejectReturnOrder = returnorder => {
     try {
       await axios.put(`/api/returnorder/reject/${returnorder._id}`);
 
-      dispatch(fetchReturnOrder());
+      dispatch(fetcreturnorder());
     } catch (error) {
       handleError(error, dispatch);
     }
@@ -135,29 +134,35 @@ export const deleteReturnOrder = id => {
 
 export const addReturnOrder = () => {
   return async (dispatch, getState) => {
-    
     try {
       const rules = {
-        
+        order:'required',
         upinumber: 'required',
         reason: 'required',
+
       };
 
       const returnOrder = getState().returnOrder.returnOrderFormData;
-      const orderdata = getState().order.order;
+      // const order = getState().order.storeProduct;
 
-      
+
+
       const newReturnOrder = {
-        ...returnOrder,
-        order:orderdata._id
+
+        returnorder:returnOrder,
+
+        reason: returnOrder.reason
+
       };
-      
+
+
+      console.log("newReturnOrder:", newReturnOrder);
 
 
       const { isValid, errors } = allFieldsValidation(newReturnOrder, rules, {
-       
-        'required.upinumber': 'UPI Number is required.',
+        'required.upi': 'UPI Number is required.',
         'required.reason': 'Reason is required.',
+
       });
 
       if (!isValid) {
@@ -170,13 +175,17 @@ export const addReturnOrder = () => {
       const successfulOptions = {
         title: `${response.data.message}`,
         position: 'tr',
-        autoDismiss: 1,
+        autoDismiss: 1
       };
 
       if (response.data.success === true) {
         dispatch(success(successfulOptions));
-        // Assuming fetchProductReviews and other dispatched actions are defined and imported correctly
         dispatch(fetchProductReviews(product.slug));
+
+        // dispatch({
+        //   type: ADD_REVIEW,
+        //   payload: response.data.review
+        // });
         dispatch({ type: RESET_ORDER_RETURN });
       }
     } catch (error) {
