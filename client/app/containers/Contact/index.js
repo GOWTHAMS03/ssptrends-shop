@@ -76,7 +76,23 @@ class Contact extends React.PureComponent {
           </div>
         </form>
 
-        <span>ssp trends</span>
+        <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2 class="text-center mb-4">Address</h2>
+        <address>
+          
+          <p>Our Operating Address:</p>
+          <p>6-44,Pattan Street,Mallikundam</p>
+          <p>Mecheri,Tamil Nadu, 636458</p>
+          <p>India</p>
+          
+          <p>Phone: <a href="tel:+918248333634">+91 8248***634</a></p>
+          <p>Email: <a href="mailto:ssptrendss@gmail.com">ssptrendss@gmail@gmail.com</a></p>
+        </address>
+      </div>
+    </div>
+  </div>
         
       </div>
     );
