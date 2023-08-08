@@ -12,11 +12,27 @@ import {
   SET_RETURN_LOADING,
   RESET_ORDER_RETURN,
   SET_ORDER_RETURN_FORM_ERRORS,
-  SET_ADVANCED_FILTERS
+  SET_ADVANCED_FILTERS,
+  REFUND_REQUEST,
+  REFUND_SUCCESS,
+  REFUND_FAILURE
 } from './constants';
 import handleError from '../../utils/error';
 import { allFieldsValidation, santizeFields } from '../../utils/validation';
 
+
+export const refundRequest = () => ({
+  type: REFUND_REQUEST,
+});
+
+export const refundSuccess = () => ({
+  type: REFUND_SUCCESS,
+});
+
+export const refundFailure = (error) => ({
+  type: REFUND_FAILURE,
+  payload: error,
+});
 
 
 export const returnOrderChange = (name, value) => {
@@ -29,24 +45,25 @@ export const returnOrderChange = (name, value) => {
 };
 
 // fetch reviews api
-export const fetchreturnorder = (n, v) => {
+export const fetchReturnOrder = (n, v) => {
+
   return async (dispatch, getState) => {
     try {
       dispatch({ type: SET_RETURN_LOADING, payload: true });
 
       const response = await axios.get(`/api/returnorder`, {
-        params: {
-          page: v ?? 1,
-          limit: 20
-        }
+        
       });
 
-      const { reviews, totalPages, currentPage, count } = response.data;
+      const { returnOrder, totalPages, currentPage, count,order } = response.data;
 
-      dispatch({ type: FETCH_ORDER_RETURN, payload: reviews });
+      dispatch({ 
+        type: FETCH_ORDER_RETURN, 
+        payload: returnOrder,order 
+      });
       dispatch({
         type: SET_ADVANCED_FILTERS,
-        payload: { totalPages, currentPage, count }
+        payload: { totalPages, currentPage, count,order }
       });
     } catch (error) {
       handleError(error, dispatch);
@@ -56,12 +73,31 @@ export const fetchreturnorder = (n, v) => {
   };
 };
 
+
+export const initiateRefund = (refundAmount) => async (dispatch) => {
+  dispatch(refundRequest());
+  try {
+    // Send the refund amount to the backend
+    await axios.post('/api/refund', { refundAmount });
+    dispatch(refundSuccess());
+    alert('Refund request sent successfully!');
+  } catch (error) {
+    dispatch(refundFailure(error.message || 'Failed to initiate refund'));
+    alert('Failed to send refund request. Please try again.');
+  }
+};
+
 export const approveReturnOrder = returnorder => {
   return async (dispatch, getState) => {
     try {
+
+     
       await axios.put(`/api/returnorder/approve/${returnorder._id}`);
 
-      dispatch(fetcreturnorder());
+
+      // const refundAmount ="100";
+      // await dispatch(initiateRefund(refundAmount));
+      dispatch(fetchReturnOrder());
     } catch (error) {
       handleError(error, dispatch);
     }
@@ -73,7 +109,7 @@ export const rejectReturnOrder = returnorder => {
     try {
       await axios.put(`/api/returnorder/reject/${returnorder._id}`);
 
-      dispatch(fetcreturnorder());
+      dispatch(fetchReturnOrder());
     } catch (error) {
       handleError(error, dispatch);
     }
@@ -106,50 +142,27 @@ export const deleteReturnOrder = id => {
 };
 
 // fetch product reviews api
-// export const fetchProductReviews = slug => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const response = await axios.get(`/api/review/${slug}`);
-
-//       const { ratingSummary, totalRatings, totalReviews, totalSummary } =
-//         getProductReviewsSummary(response.data.reviews);
-
-//       dispatch({
-//         type: FETCH_PRODUCT_REVIEWS,
-//         payload: {
-//           reviews: response.data.reviews,
-//           reviewsSummary: {
-//             ratingSummary,
-//             totalRatings,
-//             totalReviews,
-//             totalSummary
-//           }
-//         }
-//       });
-//     } catch (error) {
-//       handleError(error, dispatch);
-//     }
-//   };
-// };
 
 export const addReturnOrder = () => {
   return async (dispatch, getState) => {
     try {
       const rules = {
         order:'required',
-        upinumber: 'required',
+       
         reason: 'required',
 
       };
 
       const returnOrder = getState().returnOrder.returnOrderFormData;
       // const order = getState().order.storeProduct;
-
-
+      const orderdata = getState().order.order;
+      const imageUrlOfFirstProduct = orderdata.products[0].product.imageUrl;
 
       const newReturnOrder = {
-
+     
+        order:orderdata._id,
         returnorder:returnOrder,
+        imageUrl:imageUrlOfFirstProduct,
 
         reason: returnOrder.reason
 
@@ -182,10 +195,7 @@ export const addReturnOrder = () => {
         dispatch(success(successfulOptions));
         dispatch(fetchProductReviews(product.slug));
 
-        // dispatch({
-        //   type: ADD_REVIEW,
-        //   payload: response.data.review
-        // });
+     
         dispatch({ type: RESET_ORDER_RETURN });
       }
     } catch (error) {

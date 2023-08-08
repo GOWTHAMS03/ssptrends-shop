@@ -125,7 +125,7 @@ export const fetchMerchants = (n, v) => {
       const response = await axios.get(`/api/merchant`, {
         params: {
           page: v ?? 1,
-          limit: 20
+          limit: 10
         }
       });
 

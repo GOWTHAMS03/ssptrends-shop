@@ -4,9 +4,11 @@ import { Container, Row, Col } from 'reactstrap';
 const CartSummary = props => {
   const { cartTotal } = props;
 
-  // Calculate the shipping cost based on the cartTotal
-  const shippingCost = cartTotal.total >= 500 ? 50 : 0;
-console.log(shippingCost)
+  // Convert the cartTotal.total to a number using parseFloat()
+  const totalAmount = parseFloat(cartTotal) || 0;
+  const shippingCost = totalAmount >= 500 ? 0 : 50;
+  const totalWithShipping = totalAmount + shippingCost;
+
   return (
     <div className='cart-summary'>
       <Container>
@@ -15,7 +17,7 @@ console.log(shippingCost)
             <p className='summary-label'>Free Shipping</p>
           </Col>
           <Col xs='3' className=''>
-            <p className=''>₹ {shippingCost}</p>
+            <p className='summary-value'>₹{shippingCost}</p>
           </Col>
         </Row>
         <Row className='mb-2 summary-item'>
@@ -23,7 +25,7 @@ console.log(shippingCost)
             <p className='summary-label'>Total</p>
           </Col>
           <Col xs='3' className='text-right'>
-            <p className=''>₹{cartTotal.total}</p>
+            <p className='summary-value'>₹{totalWithShipping}</p>
           </Col>
         </Row>
       </Container>

@@ -19,13 +19,14 @@ import Pagination from '../../components/Common/Pagination';
 class ReturnOrder extends React.PureComponent {
   componentDidMount() {
     this.props.fetchReturnOrder();
-    this.props.order
+    
   }
 
 
   render() {
     
     const {
+      user,
       order,
       returnOrder,
       isLoading,
@@ -41,6 +42,8 @@ class ReturnOrder extends React.PureComponent {
       <div className='review-dashboard'>
         <SearchResultMeta label='Order Return' count={advancedFilters.count} />
               <ReturnOrderList
+                user={user}
+                order={order}
                 returnOrder={returnOrder}
                 approveReturnOrder={approveReturnOrder}
                 rejectReturnOrder={rejectReturnOrder}
@@ -53,11 +56,13 @@ class ReturnOrder extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
+ 
   return {
+    user: state.account.user,
     returnOrder: state.returnOrder.returnorder,
     isLoading: state.returnOrder.returnorder,
     advancedFilters: state.returnOrder.advancedFilters,
-
+    order:state.order,
     returnOrderFormData:state.returnOrder.returnOrderFormData,
     returnOrderChange:state.returnOrder.returnOrderChange,
     returnOrderFormErrors:state.returnOrder.returnOrderFormErrors,

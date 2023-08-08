@@ -64,11 +64,10 @@ const OrderList = props => {
                   </div>
                   <div className='mb-1'>
                     <span>Order Total</span>
-                    <span className=''>  ₹{`${order?.totalWithTax ? order?.totalWithTax : 0
-                      }`}</span>
-                  </div>
-                  <div>
-                   
+                    <span className='summary-value ml-auto'> 
+                    {` ₹ ${
+                      order?.totalWithTax ? order?.totalWithTax : 0
+                    }`}</span>
                   </div>
                 </div>
               </div>

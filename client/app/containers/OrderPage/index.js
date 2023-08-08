@@ -37,7 +37,8 @@ class OrderPage extends React.PureComponent {
       users,
       isLoading,
       cancelOrder,
-      updateOrderItemStatus
+      updateOrderItemStatus,
+      finalamount
     } = this.props;
 
     return (
@@ -48,6 +49,7 @@ class OrderPage extends React.PureComponent {
           <OrderDetails
           returnOrder={returnOrder}
             order={order}
+            finalamount={finalamount}
             user={user}
             users={users}
             cancelOrder={cancelOrder}
@@ -70,13 +72,16 @@ class OrderPage extends React.PureComponent {
 
 const mapStateToProps = state => {
 
+  console.log(state.order)
+
   return {
     users: state.users.users,
     user: state.account.user,
     order: state.order.order,
     returnOrder:state.returnOrder,
     orders :state.order.orders,
-    isLoading: state.order.isLoading
+    isLoading: state.order.isLoading,
+    finalamount:state.order.finalamount
   };
 };
 

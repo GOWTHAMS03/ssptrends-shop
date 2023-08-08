@@ -11,7 +11,6 @@ const OrderMeta = (props) => {
   const [showReturnComponent, setShowReturnComponent] = useState(false);
 
 
-
   const renderMetaAction = () => {
     const isNotDelivered =
       order.products.filter((i) => i.status === CART_ITEM_STATUS.Delivered)
@@ -85,7 +84,7 @@ const OrderMeta = (props) => {
               <p className='one-line-ellipsis'>Customer Name</p>
             </Col>
             <Col xs='8'>
-              <span className='order-label one-line-ellipsis'>{order.user}</span>
+              <span className='order-label one-line-ellipsis'>{order.userName}</span>
             </Col>
           </Row>
         </Col>

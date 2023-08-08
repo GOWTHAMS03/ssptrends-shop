@@ -27,13 +27,13 @@ class Shipping extends React.Component {
     addressChange('state', selectedAddress.state);
     addressChange('country', selectedAddress.country);
     addressChange('zipCode', selectedAddress.zipCode);
-  
+
     if (selectedAddress.isDefault) {
       setAddress(selectedAddress);
       this.props.history.push('/checkoutsummary');
     }
   };
-  
+
 
   render() {
     const { addressFormData, addresses, formErrors, history } = this.props;
@@ -48,23 +48,23 @@ class Shipping extends React.Component {
         <div className='sub-page'>
           <div className='subpage-header'>
             <div className='mb-0'>
-            {addresses.map((address, index) => (
-  <div key={index} className='address-item'>
-    <p>Address: {address.address}</p>
-    <p>Phone: {address.phonenumber}</p>
-    <p>City: {address.city}</p>
-    <p>State: {address.state}</p>
-    <p>Country: {address.country}</p>
-    <p>ZipCode: {address.zipCode}</p>
-  
-    <Button
-        variant='none'
-        size='sm'
-        text='Use this Address'
-        onClick={() => this.handleUseAddress(address)}
-      />
-  </div>
-))}
+              {addresses.map((address, index) => (
+                <div key={index} className='address-item'>
+                  <p>Address: {address.address}</p>
+                  <p>Phone: {address.phonenumber}</p>
+                  <p>City: {address.city}</p>
+                  <p>State: {address.state}</p>
+                  <p>Country: {address.country}</p>
+                  <p>ZipCode: {address.zipCode}</p>
+
+                  <Button
+                    variant='none'
+                    size='sm'
+                    text='Use this Address'
+                    onClick={() => this.handleUseAddress(address)}
+                  />
+                </div>
+              ))}
 
             </div>
           </div>
@@ -154,7 +154,7 @@ class Shipping extends React.Component {
               </Col>
             </Row>
             <hr />
-            <div className='add-address-actions'>
+            <div className='d-flex justify-content-center'>
               <Button type='submit' text='Continue' />
             </div>
           </form>

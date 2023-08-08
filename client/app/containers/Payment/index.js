@@ -4,8 +4,9 @@ import axios from 'axios';
 import Button from '../../components/Common/Button';
 import Checkbox from '../../components/Common/Checkbox';
 
+const PaymentForm = props => {
 
-const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
+  const { addressFormData, cartItems, placeOrder,finalamount } =props;
   const [loading, setLoading] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [captcha, setCaptcha] = useState('');
@@ -14,6 +15,8 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
   const [orderAmount, setOrderAmount] = useState(0);
   const [orders, setOrders] = useState([]);
   const location = useLocation();
+
+  console.log(cartItems)
 
   const url = 'http://localhost:3000/api';
 
@@ -45,97 +48,100 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
     };
   }, [orderAmount]);
 
-  const getTotalOrderAmount = () => {
-    // Implement this function to calculate the total order amount based on your business logic
-    // For example:
-    // const totalAmount = orderitems.reduce((total, item) => total + item.price, 0);
-    // return totalAmount;
-    return 0; // Replace 0 with the calculated total amount
-  };
+ 
+    const getTotalOrderAmount = (cartItems) => {
+      // Assuming each cart item has a 'price' property
+      const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+      return totalAmount;
+    };
+   // Replace 0 with the calculated total amount
+  
 
   const loadRazorpay = async () => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onerror = () => {
-      alert('Razorpay SDK failed to load. Are you online?');
-    };
-    script.onload = async () => {
-      try {
-        setLoading(true);
-        const result = await axios.post(`${url}/createorder`, {
-          amount: orderAmount,
-        });
-        const { amount, id: order_id, currency } = result.data;
-        const {
-          data: { key: razorpayKey },
-        } = await axios.get(`${url}/getrazorpaykey`);
-
-        const options = {
-          key: razorpayKey,
-          amount: getTotalOrderAmount() * 100, // Amount must be in paise (multiply by 100)
-          currency: currency,
-          name: 'example name',
-          description: 'example transaction',
-          order_id: order_id,
-          handler: async function (response) {
-            try {
-              const result = await axios.post(`${url}/payorder`, {
-                amount: getTotalOrderAmount(),
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpaySignature: response.razorpay_signature,
-              });
-              console.log(response);
-              alert(result.data.msg);
-              placeOrder(addressFormData, orderitems, 'Online Payment');
-            } catch (error) {
-              console.log(error);
-            }
-          },
-          prefill: {
-            name: 'SSP Trends',
-            email: 'ssptrends@gmail.com',
-            contact: '+91 9445460403',
-          },
-          notes: {
-            address: 'example address',
-          },
-          theme: {
-            color: '#00AB55',
-          },
-          netbanking: {
-            hide: true,
-          },
-          wallet: {
-            hide: true,
-          },
-        };
-
-        setLoading(false);
-        const paymentObject = new Razorpay(options);
-        paymentObject.open();
-      } catch (err) {
-        alert(err);
-        setLoading(false);
-      }
-    };
-    document.body.appendChild(script);
+    const { addressFormData, cartItems } = props; // Assuming these props contain the required data
+ 
+    try {
+      setLoading(true);
+      const result = await axios.post(`${url}/createorder`, {
+        amount: orderAmount,
+        address: addressFormData, // Pass addressFormData to the backend to use in the order creation
+        items: cartItems, // Pass orderitems to the backend to use in the order creation
+      });
+  
+      const { amount, id: order_id, currency } = result.data;
+      const { data: { key: razorpayKey }} = await axios.get(`${url}/getrazorpaykey`);
+  
+      const options = {
+        key: razorpayKey,
+        amount: getTotalOrderAmount(cartItems), // Amount must be in paise (multiply by 100)
+        currency: currency, // Make sure to provide the correct currency code, it should be a string (e.g., 'INR')
+        name: 'SSP TRENDS',
+        description: 'thank you for your order',
+        order_id: order_id,
+        handler: async function (response) {
+          try {
+            const result = await axios.post(`${url}/payorder`, {
+              amount: getTotalOrderAmount(cartItems),
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+            });
+           
+           
+            placeOrder(addressFormData, cartItems, 'Online Payment');
+          } catch (error) {
+            
+            alert('Payment failed. Please try again later.');
+          }
+        },
+        prefill: {
+          name: addressFormData.name, // Use the customer's name from addressFormData
+          email: addressFormData.email, // Use the customer's email from addressFormData
+          contact: addressFormData.phone, // Use the customer's phone from addressFormData
+        },
+        theme: {
+          color: '#00AB55',
+        },
+        netbanking: {
+          hide: true,
+        },
+      };
+  
+      setLoading(false);
+      const paymentObject = new Razorpay(options);
+      paymentObject.open();
+    } catch (err) {
+      console.log(err);
+      alert('Failed to initiate payment. Please try again later.');
+      setLoading(false);
+    }
   };
+  
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const totalAmount = searchParams.get('total');
     if (totalAmount) {
       setOrderAmount(parseInt(totalAmount));
+    } else {
+      const calculatedTotalAmount = getTotalOrderAmount(cartItems);
+      setOrderAmount(calculatedTotalAmount);
     }
-  }, [location.search]);
+  }, [location.search, cartItems]);
 
   const handlePayment = async () => {
     setLoading(true);
 
+    if (paymentMethods.length === 0) {
+      // No payment method selected, show an alert or update state to inform the user
+      alert('Please choose a payment method');
+      setLoading(false);
+      return;
+    }
+
     if (paymentMethods.includes('cod') && captcha === generatedCaptcha) {
       try {
-        placeOrder(addressFormData, orderitems, 'Cash on Delivery');
+        placeOrder(addressFormData, cartItems,finalamount, 'Cash on Delivery');
       } catch (error) {
         console.log(error);
       }
@@ -164,7 +170,8 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
 
   return (
     <div>
-      <h3>Select Payment Method:</h3>
+      <h3>Online Payment methods is comming soon:</h3>
+  
       <div>
         <label>
           <Checkbox
@@ -176,10 +183,12 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
           Cash on Delivery
         </label>
       </div>
+  
       {paymentMethods.includes('cod') && (
-        <div>
-          <p>Enter the Captcha: (Hint: {generatedCaptcha})</p>
-          <input
+        <div className='my-2'>
+          <p className='my-2'>Enter the Captcha: (Hint: {generatedCaptcha})</p>
+          <input 
+            className='w-100'
             type="text"
             value={captcha}
             onChange={(e) => {
@@ -188,29 +197,21 @@ const PaymentForm = ({ addressFormData, orderitems, placeOrder }) => {
             }}
           />
           {captchaError && <p>{captchaError}</p>}
-        </div>
-      )}
-      <div>
-        <label>
-          <Checkbox
-            type="checkbox"
-            value="online"
-            checked={paymentMethods.includes('online')}
-            onChange={() => handleCheckboxChange('online')}
-          />
-          Online Payment
-        </label>
-      </div>
-      <div>
+          <div className="my-2">
         <Button
           type="submit"
           disabled={loading || !isProceedEnabled}
-          text={paymentMethods.includes('online') ? 'Proceed to Payment' : 'Proceed'}
+          text="Proceed to Cash on Delivery"
           onClick={handlePayment}
         />
       </div>
+        </div>
+      )}
+  
+      
     </div>
   );
+  
 };
 
 export default PaymentForm;

@@ -87,7 +87,7 @@ class Contact extends React.PureComponent {
           <p>Mecheri,Tamil Nadu, 636458</p>
           <p>India</p>
           
-          <p>Phone: <a href="tel:+918248333634">+91 8248***634</a></p>
+          <p>Phone: <a href="tel:+918610007173">+91 8610007173</a></p>
           <p>Email: <a href="mailto:ssptrendss@gmail.com">ssptrendss@gmail@gmail.com</a></p>
         </address>
       </div>

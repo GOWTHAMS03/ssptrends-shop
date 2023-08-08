@@ -32,6 +32,7 @@
    render() {
      const { products, isLoading, authenticated, updateWishlist } = this.props;
 
+     
 
      return (
        <div className='category-shop'>

@@ -62,7 +62,7 @@ const EditProduct = props => {
             />
           </Col>
           <Col xs='12'>
-            <Input
+            <Input 
               type={'text'}
               error={formErrors['sku']}
               label={'Sku'}

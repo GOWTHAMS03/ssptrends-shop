@@ -19,6 +19,7 @@ const OrderTrack =require('../api/ordertrak');
 const { createOrder } = require('./payment');
 const { payOrder } = require('./payment');
 const { paymentResponse } = require('./payment');
+const {refundPayment} = require('./payment');
 
 // auth routes
 router.use('/auth', authRoutes);
@@ -32,9 +33,10 @@ router.get('/getrazorpaykey', (req, res) => {
   res.send({ key: process.env.RAZORPAY_KEY_ID });
 });
 
-router.post('/create-payment-intent', createOrder);
+router.post('/createorder', createOrder);
 router.post('/payorder', payOrder);
 router.get('/payres', paymentResponse);
+router.post('/refund', refundPayment);
 
 // user routes
 router.use('/user', userRoutes);

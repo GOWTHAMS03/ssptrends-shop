@@ -150,10 +150,10 @@ router.get('/list', async (req, res) => {
   }
 });
 
-// fetch store products by brand api
+// fetch store products by size api
 router.get('/list/size/:slug', async (req, res) => {
   try {
-    console.log(req)
+    
     const slug = req.params.slug;
 
     const size = await Size.findOne({ slug, isActive: true });
@@ -269,7 +269,7 @@ router.post(
   async (req, res) => {
    
     try {
-      // const sku = req.body.sku;
+      const sku = req.body.sku;
       const name = req.body.name;
       const description = req.body.description;
       const quantity = req.body.quantity;
@@ -279,9 +279,9 @@ router.post(
       const size = req.body.size;
       const image = req.file;
 
-      // if (!sku) {
-      //   return res.status(400).json({ error: 'You must enter sku.' });
-      // }
+      if (!sku) {
+        return res.status(400).json({ error: 'You must enter sku.' });
+      }
 
       if (!description || !name) {
         return res
@@ -400,6 +400,9 @@ router.get(
 
         const sizeId = sizes[0]['_id'];
 
+        console.log(Product.findOne({ _id: productId }));
+
+
         productDoc = await Product.findOne({ _id: productId })
           .populate({
             path: 'sizes',
@@ -439,16 +442,16 @@ router.put(
       const productId = req.params.id;
       const update = req.body.product;
       const query = { _id: productId };
-      const { sku, slug } = req.body.product;
+      const {  slug } = req.body.product;
 
       const foundProduct = await Product.findOne({
-        $or: [{ slug }, { sku }]
+        $or: [{ slug }]
       });
 
       if (foundProduct && foundProduct._id != productId) {
         return res
           .status(400)
-          .json({ error: 'Sku or slug is already in use.' });
+          
       }
 
       await Product.findOneAndUpdate(query, update, {

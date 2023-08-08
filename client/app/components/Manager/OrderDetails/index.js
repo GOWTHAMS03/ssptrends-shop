@@ -16,7 +16,7 @@ const OrderDetails = (props) => {
     const doc = new jsPDF();
 
     // Get the order details container
-    const orderDetailsContainer = document.getElementById('order-details-container');
+    const orderDetailsContainer = document.getElementById('order-details');
 
     // Create a promise that resolves when all sections are rendered as images
     const promises = [];
@@ -43,7 +43,7 @@ const OrderDetails = (props) => {
 
       // Add the order details ID separately to the PDF document
       doc.addPage();
-      doc.text(`Order Details ID: ${order.id}`, 10, 10); // Replace `order.id` with the actual property of your order object
+      doc.text(`Order Details ID: ${order._id}`, 10, 10); // Replace `order.id` with the actual property of your order object
 
       // Save the PDF document
       doc.save('order_details.pdf');
@@ -51,9 +51,10 @@ const OrderDetails = (props) => {
   };
 
   return (
-    <div className="order-details">
+    <div className="order-details " >
+      <div id="order-details">
       <Row>
-        <Col xs="12" md="12" id="order details">
+        <Col xs="12" md="12" >
           <OrderMeta  order={order} users={users} cancelOrder={cancelOrder} onBack={onBack} />
         </Col>
       </Row>
@@ -65,6 +66,7 @@ const OrderDetails = (props) => {
           <OrderSummary order={order} />
         </Col>
       </Row>
+      </div>
       {/* <Row>
         <Col xs="12" lg="12" className="mt">
           <OrderTrack order={order} />

@@ -81,10 +81,10 @@ const returnOrderReducer = (state = initialState, action) => {
     case ADD_ORDER_RETURN:
       return {
         ...state,
-        returnorder: [...state.returnorder, action.payload]
+        returnOrder: [...state.returnorder, action.payload]
       };
     case REMOVE_ORDER_RETURN:
-      const index = state.reviews.findIndex(r => r._id === action.payload);
+      const index = state.returnorder.findIndex(r => r._id === action.payload);
       return {
         ...state,
         returnorder: [

@@ -398,7 +398,7 @@ export const updateProduct = () => {
       if (response.data.success === true) {
         dispatch(success(successfulOptions));
 
-        //dispatch(goBack());
+        dispatch(goBack());
       }
     } catch (error) {
       handleError(error, dispatch);

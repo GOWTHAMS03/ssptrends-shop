@@ -82,7 +82,7 @@ router.get('/:category/:size', async (req, res) => {
       size: { $in: sizeIds },
       _id: { $in: productIds }
     });
-
+console.log(products)
 
     res.status(200).json({
       categoryandsize: {

@@ -9,26 +9,28 @@ const ReturnRequestSchema = new Schema({
     default: null
   },
   order: {
-    
-      type: Schema.Types.ObjectId,
-     },
 
-  paymentmethod:{
-    type: String,
-    
+    type: Schema.Types.ObjectId,
   },
-  product:[],
+  imageUrl: {
+    type: [String]
+  },
+  paymentmethod: {
+    type: String,
+
+  },
+  product: [],
   total: {
     type: Number,
-    
+
   },
-    reason: {
+  reason: {
     type: String,
-  
+
   },
   upinumber: {
     type: String,
-    
+
   },
   status: {
     type: String,

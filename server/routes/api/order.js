@@ -13,20 +13,22 @@ const { ROLES, CART_ITEM_STATUS } = require('../../constants');
 
 router.post('/add', auth, async (req, res) => {
   try {
-    const { cartId, total, addressFormData, orderitems,paymentMethod } = req.body;
+    const { cartId, total, addressFormData, orderitems,finalamount,paymentMethod } = req.body;
     const firstname = req.user.firstName;
     const lastname = req.user.lastName;
-    const user = firstname+lastname
+    const user = req.user._id;
+    const username =firstname+lastname;
 
   
 
     const order = new Order({
       cart: cartId,
       user,
-      total,
+      total:finalamount,
       addressFormData,
       orderitems,
-      paymentMethod
+      paymentMethod,
+      username
     });
 
     const orderDoc = await order.save();
@@ -263,7 +265,9 @@ router.get('/:orderId', auth, async (req, res) => {
       products: orderDoc?.cart?.products,
       addressFormData:orderDoc?.addressFormData,
       user:orderDoc?.user,
-      cartId: orderDoc.cart._id
+      cartId: orderDoc.cart._id,
+      paymentMethod:orderDoc?.paymentMethod,
+      userName:orderDoc?.username
     };
    
     order = store.caculateTaxAmount(order);

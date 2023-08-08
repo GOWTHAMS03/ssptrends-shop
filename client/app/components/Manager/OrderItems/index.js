@@ -113,7 +113,7 @@
                              </h4>
                            </Link>
                            <div className='d-flex align-items-center justify-content-between'>
-                             <span className=''>
+                             <span className='d-block item-name one-line-ellipsis'>
                                ₹ {item.purchasePrice || item.product.price}
                              </span>
                            </div>
@@ -133,7 +133,7 @@
                        </p>
                        <p>
                          Total Price
-                         <span className='order-label'> ₹{`${item.totalPrice}`}</span>
+                         <span className='order-label'>{` ₹ ${item.totalPrice}`}</span>
                        </p>
                      </div>
                      <br/>

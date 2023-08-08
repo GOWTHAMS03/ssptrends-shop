@@ -190,7 +190,7 @@ export const updateOrderItemStatus = (itemId, status) => {
     }
   };
 };
-export const addOrder = (addressFormData, orderitems,paymentMethod) => {
+export const addOrder = (addressFormData, orderitems,finalamount,paymentMethod) => {
   return async (dispatch, getState) => {
     try {
       const cartId = localStorage.getItem('cart_id');
@@ -202,7 +202,8 @@ export const addOrder = (addressFormData, orderitems,paymentMethod) => {
           total,
           addressFormData,
           orderitems,
-          paymentMethod
+          paymentMethod,
+          finalamount
         });
 
         dispatch(push(`/order/success/${response.data.order._id}`));
@@ -214,7 +215,7 @@ export const addOrder = (addressFormData, orderitems,paymentMethod) => {
   };
 };
 
-export const placeOrder = (addressFormData, orderitems,paymentMethod) => {
+export const placeOrder = (addressFormData, orderitems,finalamount,paymentMethod) => {
   return async (dispatch, getState) => {
     const token = localStorage.getItem('token');
     const cartItems = getState().cart.cartItems;
@@ -223,7 +224,7 @@ export const placeOrder = (addressFormData, orderitems,paymentMethod) => {
     if (token && cartItems.length > 0) {
       try {
         await dispatch(getCartId());
-        await dispatch(addOrder(addressFormData, orderitems,paymentMethod));
+        await dispatch(addOrder(addressFormData, orderitems,finalamount,paymentMethod));
         
       } catch (error) {
         handleError(error, dispatch);

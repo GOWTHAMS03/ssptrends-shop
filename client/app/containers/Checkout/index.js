@@ -18,7 +18,7 @@ const Checkout = (props) => {
   const [error, setError] = useState('');
 
   const { authenticated, isCartOpen, cartItems, toggleCart, handleRemoveFromCart, cartTotal } = props;
-
+console.log(cartItems)
   const url = 'http://localhost:3000/api';
 
   const handleSubmit = (event) => {
@@ -76,19 +76,20 @@ const Checkout = (props) => {
       {cartItems.length > 0 ? (
         <div className="cart-body">
           <CartList toggleCart={toggleCart} cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
-          <h2>Apply Coupon</h2>
+          <h2 className="my-4">Apply Coupon</h2>
 
           {error && <p>{error}</p>}
           <form onSubmit={handleSubmit}>
             <label htmlFor="couponCode">Coupon Code:</label>
             <input
+            className='my-4'
               type="text"
               id="couponCode"
               value={couponCode}
               onChange={(event) => setCouponCode(event.target.value)}
             />
             <br />
-            <button type="submit">Apply Coupon</button>
+            <Button  type="submit" text="submit">Apply Coupon</Button>
             <br />
             <br />
           </form>

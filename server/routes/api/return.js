@@ -9,11 +9,14 @@ const { RETURNORDER_STATUS } = require('../../constants');
 
 router.post('/add', auth, async (req, res) => {
   try {
+
+    
     const user = req.user;
 
     const returnOrder = new OrderReturn({
       ...req.body,
-      user: user._id
+      user: user._id,
+      imageUrl:req.body.imageUrl
     });
 
     const returnOrderDoc = await returnOrder.save();
@@ -30,36 +33,48 @@ router.post('/add', auth, async (req, res) => {
   }
 });
 
-// fetch all reviews api
+
+// fetch all return api
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
 
     const returnOrder = await OrderReturn.find()
-    .sort('-created')
-    .populate({
-      path: 'user',
-      select: 'firstName'
-    })
-    .populate({
-      path: 'product',
-      select: 'name slug imageUrl'
-    })
-    .limit(limit * 1)
-    .skip((page - 1) * limit)
-    .exec();
+      .sort('-created')
+      .populate({
+        path: 'user',
+        select: 'firstName'
+      })
+      .populate({
+        path: 'product',
+        select: 'name slug imageUrl'
+      })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+      
+    // Extract the order IDs from each OrderReturn
+    const arrayOfOrderIds = returnOrder.map(order => order.order);
+
+    // Fetch the corresponding Order items based on the extracted IDs
+    const order = await Order.find({ _id: { $in: arrayOfOrderIds } });
+
+    // Map the order items to an array to select only the necessary fields
+    const mappedOrders = order.map(orderItem => ({
+      _id: orderItem._id,
+      // Add other necessary fields from the 'Order' model
+      // For example: name, slug, imageUrl, etc.
+    }));
 
     const count = await OrderReturn.countDocuments();
-    
-    const orderId = returnOrder[0].order
-    const oder = await Order.find({_id:orderId})
 
     res.status(200).json({
       returnOrder,
       totalPages: Math.ceil(count / limit),
       currentPage: Number(page),
-      count
-      
+      count,
+      order: mappedOrders // Send the mapped order array
     });
   } catch (error) {
     res.status(400).json({
@@ -67,6 +82,7 @@ router.get('/', async (req, res) => {
     });
   }
 });
+
 
 router.get('/:slug', async (req, res) => {
   try {

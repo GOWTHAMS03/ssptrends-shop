@@ -27,11 +27,7 @@ const MerchantSchema = new Schema({
     type: Boolean,
     default: false
   },
-  size: {
-    type: Schema.Types.ObjectId,
-    ref: 'Size',
-    default: null
-  },
+ 
   status: {
     type: String,
     default: MERCHANT_STATUS.Waiting_Approval,

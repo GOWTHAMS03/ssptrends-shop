@@ -5,13 +5,14 @@ import { Row, Col } from 'reactstrap';
 import Input from '../../components/Common/Input';
 import Button from '../../components/Common/Button';
 
-function index() {
+function Index() {
   const [coupons, setCoupons] = useState([]);
   const [couponCode, setCouponCode] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(0);
+  const [selectedId, setSelectedId] = useState('');
 
-  const url = 'http://localhost:3000/api';
+  const url = 'http://localhost:3000/api'; // Adjust the backend API URL accordingly
 
   // Fetch the list of coupons on mount
   useEffect(() => {
@@ -19,7 +20,6 @@ function index() {
       .then((res) => setCoupons(res.data))
       .catch((err) => console.error(err));
   }, []);
-
 
   // Apply the coupon to the total price on submit
   function handleSubmit(event) {
@@ -44,19 +44,18 @@ function index() {
   // Update a coupon on submit
   function handleUpdate(event) {
     event.preventDefault();
-    const id = event.target.id.value;
+    const id = selectedId; // Use the selected ID from the dropdown
     const data = {
       code: event.target.code.value,
       discount: event.target.discount.value,
     };
-    axios.put(`${url}/coupons/${id}`, data) // fixed URL
+    axios.put(`${url}/coupons/${id}`, data)
       .then((res) => {
         const updatedCoupon = res.data;
         setCoupons(coupons.map((coupon) => coupon._id === updatedCoupon._id ? updatedCoupon : coupon));
       })
       .catch((err) => console.error(err));
   }
-
 
   // Delete a coupon on click
   function handleDelete(id) {
@@ -67,65 +66,86 @@ function index() {
 
   return (
     <div>
-      <Col xs='12' lg='10'>
+      <Col >
         <h1>Coupon Management System</h1>
         <h2>List of Coupons</h2>
-        <table xs="10" lg="8">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Code</th>
-              <th>%</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {coupons.map((coupon) => (
-              <tr key={coupon._id}>
-                <td>{coupon._id}</td>
-                <td>{coupon.code}</td>
-                <td>{coupon.discount}</td>
-                <td><Button type='submit' text='Delete' onClick={() => handleDelete(coupon._id)} /> </td>
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Coupon Code</th>
+                <th scope="col">Percent</th>
+                <th scope="col">Action</th>
               </tr>
-            ))}
-          </tbody>
+            </thead>
 
-        </table>
+            <tbody>
+              {coupons.map((coupon) => (
+                <tr scope="row" key={coupon._id}>
+                  <td>{coupon._id}</td>
+                  <td>{coupon.code}</td>
+                  <td>{coupon.discount}%</td>
+                  <td>
+                    <Button
+                      type='submit'
+                      text='Delete'
+                      onClick={() => handleDelete(coupon._id)}
+                      className="btn btn-danger"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Col>
-      <Col xs='12' lg='6'>
+      <Col >
         <h2>Create Coupon</h2>
         <form onSubmit={handleCreate}>
-          <label htmlFor="code">Code:</label>
-          <input type="text" id="code" />
+          <label className="my-2" htmlFor="code">Code:</label>
+          <input className="my-2" type="text" id="code" />
           <br />
-          <label htmlFor="discount">Discount (%):</label>
-          <input type="number" id="discount" />
-          <br />
-          <div className='reset-actions'>
-            <Button type='submit' text='Create Coupon'></Button>
+          <label className="my-2" htmlFor="discount">Discount (%):</label>
+          <input className="my-2" type="number" id="discount" />
+
+          <div className='d-flex justify-content-center'>
+            <Button type='submit' className="my-2" text='Create Coupon' />
           </div>
         </form>
       </Col>
-      <Col xs='12' lg='6'>
-        <h2>Update Coupon</h2>
+      <Col >
+        <h2 className="my-2">Update Coupon</h2>
         <form onSubmit={handleUpdate}>
-          <label htmlFor="id">ID:</label>
-          <input type="text" id="id" />
+          <label className="my-2" htmlFor="id">Select ID:</label>
+
+          <select
+            className="btn border w-100 border-primary-grey border-2  dropdown-toggle my-2"
+            id="id"
+            value={selectedId}
+            onChange={(e) => setSelectedId(e.target.value)}
+          >
+            <option value="">-- Select an ID --</option>
+            {coupons.map((coupon) => (
+              <option key={coupon._id} value={coupon._id}>
+                {coupon._id}
+              </option>
+            ))}
+          </select>
           <br />
-          <label htmlFor="code">Code:</label>
-          <input type="text" id="code" />
+          <label className="my-2" htmlFor="code">Code:</label>
+          <input className="my-2" type="text" id="code" />
           <br />
 
-          <label htmlFor="discount">Discount (%):</label>
-          <input type="number" id="discount" />
-
-          <br />
-          <Button type="submit" text="Update Coupon" />
+          <label className="my-2" htmlFor="discount">Discount (%):</label>
+          <input className="my-2" type="number" id="discount" />
+          <div className="d-flex justify-content-center">
+          <Button className="my-2" type="submit" text="Update Coupon" />
+          </div>
         </form>
       </Col>
     </div>
-
   );
 }
 
-export default index;
+export default Index;
