@@ -123,7 +123,7 @@ const Checkout = (props) => {
             <p className='summary-label'>Total</p>
           </Col>
           <Col xs='3' className='text-right'>
-          <p className='summary-value ml-auto'>₹ {}</p>
+          <p className='summary-value ml-auto'>₹ {finalamount}</p>
           </Col>
         </Row>
       </Container>
@@ -139,12 +139,15 @@ const Checkout = (props) => {
       <div>
       {showPayment && (
         <div className='parent-container'>
+          
           <Payment
             addressFormData={addressFormData}
             cartItems={cartItems}
             placeOrder={placeOrder}
             finalamount={finalamount}
+            orderitems={orderitems}
           />
+          
         </div>
       )}
       </div>

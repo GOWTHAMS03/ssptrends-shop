@@ -19,7 +19,6 @@ router.post('/add', auth, async (req, res) => {
     const user = req.user._id;
     const username =firstname+lastname;
 
-  
 
     const order = new Order({
       cart: cartId,

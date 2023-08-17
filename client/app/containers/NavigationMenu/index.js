@@ -1,20 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Navbar, Collapse } from 'reactstrap';
 import actions from '../../actions';
 import Button from '../../components/Common/Button';
 import { CloseIcon } from '../../components/Common/Icon';
 
 class NavigationMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expandedButton: null // Track which button is expanded
+    };
+  }
+
   handleCategoryClick = (link, size) => {
     this.props.toggleMenu();
     this.props.fetchProductsBySize(link.name, size.name);
   };
 
+  toggleSubMenu = (linkName) => {
+    this.setState((prevState) => ({
+      expandedButton: prevState.expandedButton === linkName ? null : linkName
+    }));
+  };
+
   render() {
-    // Destructure the props
-    const { isMenuOpen, categories, toggleMenu, sizes, products } = this.props;
+    const { categories, isMenuOpen, toggleMenu, sizes, products } = this.props;
+    const { expandedButton } = this.state;
 
     return (
       <div className='navigation-menu'>
@@ -30,35 +43,40 @@ class NavigationMenu extends React.Component {
           )}
         </div>
         <div className='menu-body'>
-          <Container>
-            <h3 className='menu-title'>Shop By Category</h3>
-            <nav role='navigation'>
-              <ul className='menu-list'>
-                {categories.map((link, index) => (
-                  <li key={index} className='menu-item'>
-                    <span>{link.name}</span>
-                    <ul className='sizes-dropdown'>
-                      {sizes.map((size, sizeIndex) => (
-                        <li key={sizeIndex}>
+          <h3 className='menu-title'>Shop By Category</h3>
+          {categories.map((link, index) => (
+            <li key={index} className='menu-item'>
+              <Button
+                text={link.name}
+                className={`${isMenuOpen ? 'menu-panel' : 'menu-panel collapse'} w-100`}
+                ariaExpanded={isMenuOpen ? 'true' : 'false'}
+                onClick={() => this.toggleSubMenu(link.name)} // Pass link.name to toggle function
+              />
+              <Navbar color='light' light expand='md'>
+                <Collapse isOpen={expandedButton === link.name} navbar> {/* Only expand the clicked button */}
+                  <ul className={`sizes-dropdown`}>
+                    {sizes.map((size, sizeIndex) => (
+                      <li key={sizeIndex}>
+                        <NavLink
+                          onClick={() => this.handleCategoryClick(link, size)}
+                          to={'/shop/' + link.name + '/' + size.name}
+                          activeClassName='active-link'
+                          exact
+                          className='nav-link'
+                        >
                          
-                          <NavLink
-                      onClick={() => this.handleCategoryClick(link, size)}
-                      to={'/shop/'+link.name+'/'+size.name}
-                      activeClassName='active-link'
-                      exact
-                    >
-                       {size.name}
-                    </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </Container>
+                          {size.name}
+                         
+                          
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </Collapse>
+              </Navbar>
+            </li>
+          ))}
         </div>
-
         {/* Display the products */}
         <div>
           {products.map((product, index) => (

@@ -87,6 +87,14 @@ const OrderMeta = (props) => {
               <span className='order-label one-line-ellipsis'>{order.userName}</span>
             </Col>
           </Row>
+          <Row>
+            <Col xs='4'>
+              <p className='one-line-ellipsis'>Payment Method</p>
+            </Col>
+            <Col xs='8'>
+              <span className='order-label one-line-ellipsis'>{order.paymentMethod}</span>
+            </Col>
+          </Row>
         </Col>
         <Col xs='12' md='4' className='text-left text-md-right'>
           {renderMetaAction()}

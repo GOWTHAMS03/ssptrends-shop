@@ -6,7 +6,7 @@ import Checkbox from '../../components/Common/Checkbox';
 
 const PaymentForm = props => {
 
-  const { addressFormData, cartItems, placeOrder,finalamount } =props;
+  const { addressFormData, cartItems, placeOrder,finalamount,orderitems } =props;
   const [loading, setLoading] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [captcha, setCaptcha] = useState('');
@@ -17,6 +17,7 @@ const PaymentForm = props => {
   const location = useLocation();
 
   console.log(cartItems)
+  console.log(orderitems)
 
   const url = 'http://localhost:3000/api';
 
@@ -49,21 +50,22 @@ const PaymentForm = props => {
   }, [orderAmount]);
 
  
-    const getTotalOrderAmount = (cartItems) => {
-      // Assuming each cart item has a 'price' property
-      const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-      return totalAmount;
-    };
+  const getTotalOrderAmount = (orderitems) => {
+   
+    return orderitems.total; // Return 0 if orderitems or items array is not valid
+};
+
    // Replace 0 with the calculated total amount
   
 
   const loadRazorpay = async () => {
     const { addressFormData, cartItems } = props; // Assuming these props contain the required data
- 
+    const totalOrderAmount = getTotalOrderAmount(orderitems);
+
     try {
       setLoading(true);
       const result = await axios.post(`${url}/createorder`, {
-        amount: orderAmount,
+        amount: totalOrderAmount * 100,
         address: addressFormData, // Pass addressFormData to the backend to use in the order creation
         items: cartItems, // Pass orderitems to the backend to use in the order creation
       });
@@ -170,8 +172,7 @@ const PaymentForm = props => {
 
   return (
     <div>
-      <h3>Online Payment methods is comming soon:</h3>
-  
+      <h3>Select Payment Method:</h3>
       <div>
         <label>
           <Checkbox
@@ -183,12 +184,10 @@ const PaymentForm = props => {
           Cash on Delivery
         </label>
       </div>
-  
       {paymentMethods.includes('cod') && (
-        <div className='my-2'>
-          <p className='my-2'>Enter the Captcha: (Hint: {generatedCaptcha})</p>
-          <input 
-            className='w-100'
+        <div>
+          <p>Enter the Captcha: (Hint: {generatedCaptcha})</p>
+          <input
             type="text"
             value={captcha}
             onChange={(e) => {
@@ -197,18 +196,27 @@ const PaymentForm = props => {
             }}
           />
           {captchaError && <p>{captchaError}</p>}
-          <div className="my-2">
+        </div>
+      )}
+      <div>
+        <label>
+          <Checkbox
+            type="checkbox"
+            value="online"
+            checked={paymentMethods.includes('online')}
+            onChange={() => handleCheckboxChange('online')}
+          />
+          Online Payment
+        </label>
+      </div>
+      <div>
         <Button
           type="submit"
           disabled={loading || !isProceedEnabled}
-          text="Proceed to Cash on Delivery"
+          text={paymentMethods.includes('online') ? 'Proceed to Payment' : 'Proceed'}
           onClick={handlePayment}
         />
       </div>
-        </div>
-      )}
-  
-      
     </div>
   );
   
