@@ -36,7 +36,7 @@ const Checkout = (props) => {
       return (
         <div key={item._id}>
           {/* Add the 'item-image-container' class for fixed-size container */}
-          <div className='item-image-container'>
+          <div className='item-image-container '>
             <img className='item-image' src={item.imageUrl[0]} alt={item.name} />
           </div>
         </div>
@@ -68,11 +68,11 @@ const Checkout = (props) => {
         <p>{addressFormData.country}</p>
       </div>
 
-      <div className='checkoutsum-list'>
+      <div className='checkoutsum-list '>
 
         {cartItems.map((item, index) => (
 
-          <div key={index} className='checkoutsum-box'>
+          <div key={index} className='checkoutsum-box flex '>
             <div className='d-block box-link'>
               <div className='d-flex flex-column flex-lg-row mb-3' >
 
@@ -94,7 +94,7 @@ const Checkout = (props) => {
                     </div>
                     <div className='mb-1'>
                       <span>Order Total : </span>
-                      <span className='order-label'>₹{item.totalPrice}</span>
+                      <span className='order-label'>₹{`  ${item.totalPrice}`}</span>
                     </div>
                     <div>
 
@@ -110,20 +110,20 @@ const Checkout = (props) => {
 
       <div className='cart-summary'>
       <Container>
-        <Row className='mb-2 summary-item'>
+        <Row className='mb-2 d-flex justify-content-around'>
           <Col xs='9'>
             <p className='summary-label'>Free Shipping</p>
           </Col>
-          <Col xs='3' className=''>
-          <p className='summary-value ml-auto'>₹ {shippingPrice}</p>
+          <Col xs='3' className='text-right'>
+          <p className='summary-value'>₹{`  ${shippingPrice}`}</p>
           </Col>
         </Row>
-        <Row className='mb-2 summary-item'>
+        <Row className='mb-2 d-flex justify-content-around'>
           <Col xs='9'>
             <p className='summary-label'>Total</p>
           </Col>
           <Col xs='3' className='text-right'>
-          <p className='summary-value ml-auto'>₹ {finalamount}</p>
+          <p className='summary-value'>₹{` ${finalamount}`}</p>
           </Col>
         </Row>
       </Container>

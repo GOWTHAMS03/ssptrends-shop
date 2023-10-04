@@ -12,20 +12,21 @@ const CartSummary = props => {
   return (
     <div className='cart-summary'>
       <Container>
-        <Row className='mb-2 summary-item'>
+        <Row className='mb-2 d-flex justify-content-around'>
           <Col xs='9'>
+   
             <p className='summary-label'>Free Shipping</p>
           </Col>
-          <Col xs='3' className=''>
-            <p className='summary-value'>₹{shippingCost}</p>
+          <Col xs='3' className='text-right'>
+            <p className='summary-value'>₹ {`    ${shippingCost}`}</p>
           </Col>
         </Row>
-        <Row className='mb-2 summary-item'>
+        <Row className='mb-2 d-flex justify-content-around'>
           <Col xs='9'>
             <p className='summary-label'>Total</p>
           </Col>
           <Col xs='3' className='text-right'>
-            <p className='summary-value'>₹{totalWithShipping}</p>
+            <p className='summary-value'>₹   {  `  ${totalWithShipping}`}</p>
           </Col>
         </Row>
       </Container>

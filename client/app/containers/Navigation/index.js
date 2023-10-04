@@ -173,7 +173,7 @@ class Navigation extends React.PureComponent {
                   />
                 )}
                 <Link to='/'>
-                  <img src='images/ssptrends.png' className='logo '/>
+                  <img src='images/ssptrends.svg' className='logo '/>
                   
                 </Link>
               </div>

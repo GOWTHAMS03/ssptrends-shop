@@ -44,7 +44,7 @@ export const fetchOrders = (page = 1) => {
       const response = await axios.get(`/api/order`, {
         params: {
           page: page ?? 1,
-          limit: 20
+          limit: 10
         }
       });
 

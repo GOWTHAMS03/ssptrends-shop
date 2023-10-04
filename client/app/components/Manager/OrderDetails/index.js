@@ -132,26 +132,25 @@ const OrderDetails = (props) => {
     );
   };
   
-
   const generatePDFContent = async () => {
-    const pdf = new jsPDF({
-      format: 'a4',
-    });
-  
     const element = document.getElementById('invoice-container');
     const canvas = await html2canvas(element);
   
-    const data = canvas.toDataURL('image/png');
-    const imgProperties = pdf.getImageProperties(data);
+    // Determine the device type based on screen width
+    const isMobile = window.innerWidth < 768; // Adjust this threshold as needed
   
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    const pdf = new jsPDF({
+      unit: 'px',
+      format: isMobile ? 'a5' : 'a4', // Use a smaller format for mobile, a larger one for web
+    });
   
-    const xOffset = (pdfWidth - imgProperties.width * (pdfHeight / imgProperties.height)) / 2;
-  
-    pdf.addImage(data, 'PNG', xOffset, 0, pdfWidth, pdfHeight);
+    pdf.addImage(canvas, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
     return pdf;
   };
+  
+  
+  
+  
   
   const handleDownload = async () => {
   const content = generateInvoiceContent();

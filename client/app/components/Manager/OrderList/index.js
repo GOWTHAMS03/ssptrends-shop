@@ -13,7 +13,7 @@ import { formatDate } from '../../../utils/date';
 const OrderList = props => {
   const { orders } = props;
 
-
+console.log(orders);
 
   const renderFirstItem = order => {
     if (order.products) {
@@ -34,6 +34,7 @@ const OrderList = props => {
 
   return (
     <div className='order-list'>
+      
       {orders.map((order, index) => (
         <div key={index} className='order-box'>
          
