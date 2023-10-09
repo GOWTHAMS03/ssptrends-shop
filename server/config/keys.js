@@ -3,7 +3,9 @@ module.exports = {
     name: 'Ssp Trends',
     apiURL: `${process.env.BASE_API_URL}`,
     serverURL: process.env.BASE_SERVER_URL,
-    clientURL: process.env.BASE_CLIENT_URL
+    clientURL: process.env.BASE_CLIENT_URL,
+    domainURL: process.env.BASE_DOMAIN_URL,
+    
   },
   port: process.env.PORT || 3000,
   database: {

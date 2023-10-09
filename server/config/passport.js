@@ -9,7 +9,7 @@ const keys = require('./keys');
 const { EMAIL_PROVIDER } = require('../constants');
 
 const { google, facebook } = keys;
-const { clientURL, apiURL } = keys.app;
+const { clientURL, apiURL,domainURL } = keys.app;
 
 const User = mongoose.model('User');
 const secret = keys.jwt.secret;
@@ -48,7 +48,7 @@ const googleAuth = async () => {
         {
           clientID: google.clientID,
           clientSecret: google.clientSecret,
-          callbackURL: `${clientURL}/${apiURL}/${google.callbackURL}`
+          callbackURL: `/${apiURL}/${google.callbackURL}`
         },
         (accessToken, refreshToken, profile, done) => {
           User.findOne({ email: profile.email })
