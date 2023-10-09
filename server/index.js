@@ -12,8 +12,8 @@ const routes = require('./routes');
 const socket = require('./socket');
 const setupDB = require('./utils/db');
 
-const { port, host } = keys; // Use the 'host' from your keys configuration
 
+const { port } = keys;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -41,10 +41,15 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const server = app.listen(port, host, () => { // Listen on both localhost and server IP
+
+
+
+
+
+const server = app.listen(port,'0.0.0.0', () => {
   console.log(
     `${chalk.green('✓')} ${chalk.blue(
-      `Listening on ${host}:${port}. Visit http://${host}:${port}/ in your browser.`
+      `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.`
     )}`
   );
 });
