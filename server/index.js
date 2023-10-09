@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 
-const server = app.listen(port,'0.0.0.0', () => {
+const server = app.listen(port, () => {
   console.log(
     `${chalk.green('✓')} ${chalk.blue(
       `Listening on port ${port}. Visit http://localhost:${port}/ in your browser.`
