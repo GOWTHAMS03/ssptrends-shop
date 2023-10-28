@@ -23,6 +23,8 @@ const fetchProductsBySize = (category, size) => {
 
       const product =data.categoryandsize;
 
+      console.log(product,"this is product data");
+
       // Dispatch the success action with the retrieved products
       dispatch({
         type: SIZECATEGORY,

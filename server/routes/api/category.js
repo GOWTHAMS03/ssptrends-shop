@@ -75,12 +75,15 @@ router.get('/:category/:size', async (req, res) => {
         message: `No sizes found for the product IDs.`
       });
     }
+    const sizeName = sizes.map(size => size.name);
+    console.log(sizes,"sizes")
 
     const sizeIds = sizes.map(size => size._id);
 
+console.log(sizeName,"size name")
     const products = await Product.find({
       size: { $in: sizeIds },
-      _id: { $in: productIds }
+      _id: { $in: productIds },
     });
 console.log(products)
 

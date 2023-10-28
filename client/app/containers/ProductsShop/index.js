@@ -23,7 +23,7 @@ class ProductsShop extends React.PureComponent {
   render() {
     const { products, isLoading, authenticated, updateWishlist } = this.props;
     
-
+console.log(products,"this is products")
     const displayProducts = products && products.length > 0;
 
     return (

@@ -9,7 +9,7 @@
  
  import actions from '../../actions';
  
- import ProductList from '../../components/Store/ProductList';
+ import ProductPage from '../../containers/CategoryandSizeShop/Productpage';
  import NotFound from '../../components/Common/NotFound';
  import LoadingIndicator from '../../components/Common/LoadingIndicator';
  
@@ -30,19 +30,24 @@
   }
  
    render() {
-     const { products, isLoading, authenticated, updateWishlist } = this.props;
+     const { products,storesizes, isLoading, authenticated, updateWishlist } = this.props;
 
-     
 
      return (
        <div className='category-shop'>
          {isLoading && <LoadingIndicator />}
          {products && products.length > 0 && (
-           <ProductList
+
+<div>
+<ProductPage
+            storesizes={storesizes}
              products={products}
              authenticated={authenticated}
              updateWishlist={updateWishlist}
            />
+           {console.log(products.size)}
+</div>          
+           
          )}
          {!isLoading && products && products.length <= 0 && (
            <NotFound message='No products found.' />
@@ -57,7 +62,8 @@
    return {
      products: state.menu.productsBySize.categoryandsize,
      isLoading: state.product.isLoading,
-     authenticated: state.authentication.authenticated
+     authenticated: state.authentication.authenticated,
+     storesizes: state.size.storesizes
    };
  };
  

@@ -93,10 +93,11 @@ router.get('/list', async (req, res) => {
       limit = 10
     } = req.query;
     sortOrder = JSON.parse(sortOrder);
+    
 
     const categoryFilter = category ? { category } : {};
     const basicQuery = getStoreProductsQuery(min, max, rating);
-
+    
     const userDoc = await checkAuth(req);
     const categoryDoc = await Category.findOne(
       { slug: categoryFilter.category, isActive: true },
@@ -118,6 +119,7 @@ router.get('/list', async (req, res) => {
     const productsCount = await Product.aggregate(basicQuery);
     const count = productsCount.length;
     const size = count > limit ? page - 1 : 0;
+    console.log(size,"size")
     const currentPage = count > limit ? Number(page) : 1;
 
     // paginate query
@@ -144,6 +146,20 @@ router.get('/list', async (req, res) => {
     });
   } catch (error) {
     console.log('error', error);
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
+});
+
+router.get('/allproduct', async (req, res) => {
+  try {
+    const products = await Product.find({});
+
+    res.status(200).json({
+      products
+    });
+  } catch (error) {
     res.status(400).json({
       error: 'Your request could not be processed. Please try again.'
     });
@@ -370,6 +386,8 @@ router.get(
           }
         });
       }
+
+      console.log(products)
 
       res.status(200).json({
         products

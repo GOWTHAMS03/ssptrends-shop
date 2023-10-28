@@ -24,7 +24,8 @@ import {
   FETCH_PRODUCTS_SELECT,
   SET_PRODUCTS_LOADING,
   SET_ADVANCED_FILTERS,
-  RESET_ADVANCED_FILTERS
+  RESET_ADVANCED_FILTERS,
+  FETCH_ALL_PRODUCTS
 } from './constants';
 
 import { ROLES } from '../../constants';
@@ -148,6 +149,7 @@ export const fetchsizeProducts = slug => {
       dispatch(setProductLoading(true));
 
       const response = await axios.get(`/api/product/list/size/${slug}`);
+      
 
       const s = getState().product.advancedFilters;
       dispatch({
@@ -187,6 +189,27 @@ export const fetchProductsSelect = () => {
   };
 };
 
+// fetch all products api
+export const fetchAllProducts = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setProductLoading(true));
+
+      const response = await axios.get(`/api/product/allproduct`);
+      
+
+      dispatch({
+        type: FETCH_ALL_PRODUCTS,
+        payload: response.data.products
+      });
+    } catch (error) {
+      handleError(error, dispatch);
+    } finally {
+      dispatch(setProductLoading(false));
+    }
+  };
+};
+
 // fetch products api
 export const fetchProducts = () => {
   return async (dispatch, getState) => {
@@ -194,6 +217,7 @@ export const fetchProducts = () => {
       dispatch(setProductLoading(true));
 
       const response = await axios.get(`/api/product`);
+      
 
       dispatch({
         type: FETCH_PRODUCTS,

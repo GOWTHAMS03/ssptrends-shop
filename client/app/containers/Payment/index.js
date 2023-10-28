@@ -50,74 +50,78 @@ const PaymentForm = props => {
   }, [orderAmount]);
 
  
-  const getTotalOrderAmount = (orderitems) => {
-   
-    return orderitems.total; // Return 0 if orderitems or items array is not valid
+const getTotalOrderAmount = (cartItems) => {
+  // Assuming each cart item has a 'price' property
+  const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+  return totalAmount;
 };
 
    // Replace 0 with the calculated total amount
   
 
-  const loadRazorpay = async () => {
-    const { addressFormData, cartItems } = props; // Assuming these props contain the required data
-    const totalOrderAmount = getTotalOrderAmount(orderitems);
-
-    try {
-      setLoading(true);
-      const result = await axios.post(`${url}/createorder`, {
-        amount: totalOrderAmount * 100,
-        address: addressFormData, // Pass addressFormData to the backend to use in the order creation
-        items: cartItems, // Pass orderitems to the backend to use in the order creation
-      });
+   const loadRazorpay = async () => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onerror = () => {
+      alert('Razorpay SDK failed to load. Are you online?');
+    };
+    script.onload = async () => {
+      try {
+        setLoading(true);
+        const result = await axios.post(`${url}/createorder`, {
+          amount: orderAmount,
+          address: addressFormData, // Pass addressFormData to the backend to use in the order creation
+          items: orderitems, // Pass orderitems to the backend to use in the order creation
+        });
   
-      const { amount, id: order_id, currency } = result.data;
-      const { data: { key: razorpayKey }} = await axios.get(`${url}/getrazorpaykey`);
+        const { amount, id: order_id, currency } = result.data;
+        const { data: { key: razorpayKey }} = await axios.get(`${url}/getrazorpaykey`);
   
-      const options = {
-        key: razorpayKey,
-        amount: getTotalOrderAmount(cartItems), // Amount must be in paise (multiply by 100)
-        currency: currency, // Make sure to provide the correct currency code, it should be a string (e.g., 'INR')
-        name: 'SSP TRENDS',
-        description: 'thank you for your order',
-        order_id: order_id,
-        handler: async function (response) {
-          try {
-            const result = await axios.post(`${url}/payorder`, {
-              amount: getTotalOrderAmount(cartItems),
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
-            });
-           
-           
-            placeOrder(addressFormData, cartItems, 'Online Payment');
-          } catch (error) {
-            
-            alert('Payment failed. Please try again later.');
-          }
-        },
-        prefill: {
-          name: addressFormData.name, // Use the customer's name from addressFormData
-          email: addressFormData.email, // Use the customer's email from addressFormData
-          contact: addressFormData.phone, // Use the customer's phone from addressFormData
-        },
-        theme: {
-          color: '#00AB55',
-        },
-        netbanking: {
-          hide: true,
-        },
-      };
+        const options = {
+          key: razorpayKey,
+          amount: getTotalOrderAmount(orderitems) * 100, // Amount must be in paise (multiply by 100)
+          currency: currency, // Make sure to provide the correct currency code, it should be a string (e.g., 'INR')
+          name: 'SSP TRENDS',
+          description: 'Thank you for your order',
+          order_id: order_id,
+          handler: async function (response) {
+            try {
+              const result = await axios.post(`${url}/payorder`, {
+                amount: getTotalOrderAmount(orderitems),
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+              });
   
-      setLoading(false);
-      const paymentObject = new Razorpay(options);
-      paymentObject.open();
-    } catch (err) {
-      console.log(err);
-      alert('Failed to initiate payment. Please try again later.');
-      setLoading(false);
-    }
+              placeOrder(addressFormData, orderitems, 'Online Payment');
+            } catch (error) {
+              alert('Payment failed. Please try again later.');
+            }
+          },
+          prefill: {
+            name: addressFormData.name, // Use the customer's name from addressFormData
+            email: addressFormData.email, // Use the customer's email from addressFormData
+            contact: addressFormData.phone, // Use the customer's phone from addressFormData
+          },
+          theme: {
+            color: '#00AB55',
+          },
+          netbanking: {
+            hide: true,
+          },
+        };
+  
+        setLoading(false);
+        const paymentObject = new Razorpay(options);
+        paymentObject.open();
+      } catch (err) {
+        alert('Failed to initiate payment. Please try again later.');
+        setLoading(false);
+      }
+    };
+    document.body.appendChild(script);
   };
+  
   
 
   useEffect(() => {

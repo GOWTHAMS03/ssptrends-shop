@@ -22,7 +22,8 @@ import {
   FETCH_PRODUCTS_SELECT,
   SET_PRODUCTS_LOADING,
   SET_ADVANCED_FILTERS,
-  RESET_ADVANCED_FILTERS
+  RESET_ADVANCED_FILTERS,
+  FETCH_ALL_PRODUCTS
 } from './constants';
 
 const initialState = {
@@ -87,6 +88,12 @@ const productReducer = (state = initialState, action) => {
         product: action.payload,
         editFormErrors: {}
       };
+      case FETCH_ALL_PRODUCTS:
+        return {
+          ...state,
+          product: action.payload,
+          editFormErrors: {}
+        };
     case FETCH_STORE_PRODUCT:
       return {
         ...state,
