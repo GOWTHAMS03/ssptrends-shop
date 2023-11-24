@@ -1,30 +1,46 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
   push:
-    branches: [ "master" ]
-
+    branches: ["master"]
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
       matrix:
         node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-   
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - run: npm ci
+
+      # Additional steps for resolving dependencies
+      # Check logs for more information on dependency conflicts
+      - name: Show error logs
+        run: |
+          cat /home/ubuntu/.npm/eresolve-report.txt
+          cat /home/ubuntu/.npm/_logs/2023-11-23T18_35_48_729Z-debug-0.log
+
+      # Manually resolve dependencies if needed
+      # Update package.json or run specific commands
+
+      # Retry npm ci after resolving dependencies
+      - run: npm ci
+
+      # Optionally force installation
+      # - run: npm ci --force
+
+      # Additional steps for testing or building the code
+      - run: npm run build --if-present
