@@ -1,7 +1,7 @@
 {
   "name": "ecom",
   "version": "1.0.0",
-  "description": "",
+  "description": "ssptrends wholesale hub",
   "main": "server/index.js",
   "scripts": {
     "clean": "rimraf dist",
