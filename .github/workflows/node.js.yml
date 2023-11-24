@@ -1,3 +1,4 @@
+
 name: Node.js CI
 
 on:
@@ -27,20 +28,20 @@ jobs:
       - run: npm ci
 
       # Additional steps for resolving dependencies
-      # Check logs for more information on dependency conflicts
-      - name: Show error logs
-        run: |
-          cat /home/ubuntu/.npm/eresolve-report.txt
-          cat /home/ubuntu/.npm/_logs/2023-11-23T18_35_48_729Z-debug-0.log
+      - name: Check npm audit
+        run: npm audit  # Check for vulnerabilities
 
-      # Manually resolve dependencies if needed
-      # Update package.json or run specific commands
+      - name: Check npm outdated
+        run: npm outdated  # Check for outdated dependencies
+
+      - name: Update dependencies if necessary
+        run: |
+          # Update specific dependencies to resolve conflicts
+          npm install package-name@latest --save-dev
 
       # Retry npm ci after resolving dependencies
       - run: npm ci
 
-      # Optionally force installation
-      # - run: npm ci --force
-
       # Additional steps for testing or building the code
       - run: npm run build --if-present
+
